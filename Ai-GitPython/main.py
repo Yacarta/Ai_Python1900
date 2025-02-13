@@ -1,15 +1,30 @@
-# This is a sample Python script.
+#  Завдання 1
+# Створіть клас Проект з атрибутами:
+#  назва
+#  виділений кошторис
+#  загальні витрати
+#  чи завершений(за замовчуванням False)
+#  час виконання(за замовчуванням 0 місяців)
+#  список необхідних задач
+# Додайте методи:
+#  вивід інформації: назва, час виконання, необхідні
+# задачі
+#  добавити нову задачу
+#  розбити задачу на під-задачі: передається назва задачі
+# та список під-задач
+#  виконати задачу, передається назва, час та ціна
+# виконання
+#  поповнення кошторису
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+class Project:
+
+    def __init__(self, name, budget,
+                 expenses, tasks):
+        self.name = name
+        self.budget = budget
+        self.expenses = expenses
+        self.tasks = tasks
+        self.is_fibished = False
+        self.spent_time = 0
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-Hi
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# S
