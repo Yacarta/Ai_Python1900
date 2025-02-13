@@ -41,6 +41,22 @@ class Project:
             print('Задачі що залишились:')
             for task in self.tasks:
                 print(f'   - {task}')
+        print()
+        print()
+
+    def add_task(self, task):
+        self.tasks.append(task)
+
+    def divide_task(self, task, subtasks):
+        if task not in self.tasks:
+            print(f'Немає такої задачі {task}')
+            return
+
+        # задача є в списку задач self.tasks
+        self.tasks.remove(task)
+
+        self.tasks += subtasks
+
 
 
 project = Project(name='Ігрушка',
@@ -49,3 +65,21 @@ project = Project(name='Ігрушка',
                          'Придумати загальну ідею'])
 
 project.display_info()
+
+project.add_task('Вибрати ПЗ для гри')
+
+project.display_info()
+
+project.divide_task('Організувати бенкет',
+                    ['витратити бюджет']
+                    )
+
+project.divide_task('Придумати загальну ідею',
+                    ['Обрати між 2D та 3D',
+                     'Придумати сюжет',
+                     'Прописати персонажів']
+                    )
+
+project.display_info()
+
+
