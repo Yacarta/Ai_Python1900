@@ -54,6 +54,7 @@ class Bank:
             self.balans = self.
 
 
+
 client = Bank("Jhon", 2000, "usd")
 client.print_info()
 client.exchenge(500, 'usd', 'grn')
