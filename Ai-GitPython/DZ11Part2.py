@@ -47,8 +47,23 @@ class Bank:
             self.balans = self.exchange(self.balans, self.currency, currency)
             self.currency = currency
             print(
-                f"Ваш рахунок переведено в {self.currency_ukr[currency]}. У Вас {self.balans:.2f} {self.currency_ukr[currency]}")
+                f"Ваш рахунок переведено в {self.currency_ukr[currency]}."
+                f" У Вас {self.balans:.2f} {self.currency_ukr[currency]}")
+
 # поповнення балансу(валюта та сама)
+    def add_currency(self, amount):
+        self.balans += amount
+        print(f"Ваш рахунок  поповнено. У Вас {self.balans} {self.currency_ukr[self.currency]} ")
+
+    def withdraw(self, amount):
+        if amount <= self.balans:
+            self.balans -= amount
+            print(f"Ви зняли з рахунку {amount}."
+                  f" У Вас залишилося на рахунку {self.balans} {self.currency_ukr[self.currency]} ")
+        else:
+            print(f"Недостатньо коштів на рахунку. У Вас на рахунку {amount} ")
+
+
 
 
 # зняття грошей з балансу(валюта та сама).
@@ -58,3 +73,8 @@ client = Bank("Jhon", 2000, "usd")
 client.print_info()
 client.exchange(500, 'usd', 'grn')
 client.change_currency("grn")
+client.add_currency(1000)
+client.print_info()
+client.withdraw(5000)
+client.print_info()
+
