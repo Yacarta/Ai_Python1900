@@ -61,3 +61,25 @@ class Triangle:
         print(f"Трикутник")
         print(f"сторони: {self.a, self.b, self.c} "
               f"периметр: {perim} ")
+
+
+def create_figure():
+    figure_type = input("Enter figure type: ")
+
+    if figure_type == 'circle':
+        radius = float(input('Enter radius'))
+        return Circle(radius)
+
+    elif figure_type == 'rect':
+        user_width = float(input("Entre width: "))
+        user_height = float(input("Enter height: "))
+        return Rectangle(width=user_width, height=user_height)
+
+    elif figure_type == 'triangle':
+        a = float(input("Enter side a: "))
+        b = float(input("Enter side b: "))
+        c = float(input("Enter side c: "))
+        return Triangle(a, b, c)
+
+    else:
+        print('Unknown figure')
