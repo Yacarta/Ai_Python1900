@@ -163,6 +163,7 @@ class Phone:
     def turn_off(self):
         self.is_on = False
 
+
     def download_app(self, app_name, app_memory):
         free_memory = self.max_memory - self.used_memory
 
