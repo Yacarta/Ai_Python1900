@@ -269,6 +269,7 @@ song2 = Song("Bohemian Rhapsody", "Queen")
 song3 = Song("Shape of You", "Ed Sheeran")
 song4 = Song("Imagine", "John Lennon")
 
+
 playlist = Playlist([])
 playlist.add_song(song1)
 playlist.add_song(song2)
