@@ -1,357 +1,158 @@
-# Завдання 1
-# Створіть наступні класи:
-#  Rectangle – атрибути width, height
-#  Circle – атрибути radius
-#  Triangle – атрибути a, b, c
-
-# Методи:
-#  get_perimeter()
-#  display_info()
-
-# Напишіть функцію create_figure() яка запитує у користувача
-# тип фігури та потрібні атрибути і повертає об’єкт.
-# Створіть декілька фігур, добавте їх у список та для кожної
-# викличте відповідні методи.
-
-from math import pi
-#import math
-
-
-# поліморфізм
-class Rectangle:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-
-    def get_perimeter(self):
-        return 2 * (self.width + self.height)
-
-    def display_info(self):
-        perim = self.get_perimeter()
-        print(f"Прямокутник")
-        print(f"ширина: {self.width} "
-              f"висота: {self.height} "
-              f"периметр: {perim} ")
-
-
-class Circle:
-    def __init__(self, radius):
-        self.radius = radius
-
-    def get_perimeter(self):
-        # return 2 * math.pi * self.radius
-        return 2 * pi * self.radius
-
-    def display_info(self):
-        perim = self.get_perimeter()
-        print(f"Коло")
-        print(f"радіус: {self.radius} "
-              f"периметр: {perim} ")
-
-
-class Triangle:
-    def __init__(self, a, b, c):
-        self.a = a
-        self.b = b
-        self.c = c
-
-    def get_perimeter(self):
-        return self.a + self.b + self.c
-
-    def display_info(self):
-        perim = self.get_perimeter()
-        print(f"Трикутник")
-        print(f"сторони: {self.a}, {self.b}, {self.c} "
-              f"периметр: {perim} ")
-
-
-def create_figure():
-    figure_type = input("Enter figure type: ")
-
-    if figure_type == 'circle':
-        radius = float(input('Enter radius'))
-        return Circle(radius)
-
-    elif figure_type == 'rect':
-        user_width = float(input("Entre width: "))
-        user_height = float(input("Enter height: "))
-        return Rectangle(width=user_width, height=user_height)
-
-    elif figure_type == 'triangle':
-        a = float(input("Enter side a: "))
-        b = float(input("Enter side b: "))
-        c = float(input("Enter side c: "))
-        return Triangle(a, b, c)
-
-    else:
-        print('Unknown figure')
-
-
-
-
-# використання
-# figure = create_figure()
+# nums = [1, 4, 5, 2]
+# a = 1
+# b = 2
 #
-# print(type(figure))
+# a == b
+# a.__eq__(b)
 #
-# if figure is not None:
-#     figure.display_info()
+# a + b
+# a.__add__(b)
+#
+# a > b
+# a.__gt__(b)
+#
+# 3 in nums
+# nums.__contains__(3)
+#
+# nums[2]
+# nums.__getitem__(2)
+#
+# nums.append
+#
+# min max sort
+
+#  Створіть клас Cart з атрибутами
+#  items – список товарів
+#  total – загальна ціна товарів
+# методи:
+#  __str__(self) – повертає рядок зі списком товарів
+#  __len__(self) – повертає кількість товарів
+#  __add__(self, other) – об’єднує 2 кошики та повертає
+# новий кошик
+# Створіть два кошики. Виведіть кількість товарів в кожному
+# з них. Виведіть самі кошики. Об’єднайте їх та виведіть
+# кількість товарів в новому кошику та товари в ньом
+
+
+class Cart:
+    def __init__(self, items, total):
+        self.items = items
+        self.total = total
+
+    def __str__(self):
+        text = ''
+        for item in self.items:
+            text += str(item) + ', '
+
+        text = text[:-2]
+        return f"{text}. Загальна ціна {self.total}$"
+
+    def __len__(self):
+        return len(self.items)
+
+    def __add__(self, other):
+        new_items = self.items + other.items
+        new_total = self.total + other.total
+        new_cart = Cart(new_items, new_total)
+        return new_cart
+
+    def __gt__(self, other):  # self > other
+        return len(self) > len(other)
+
+    def __lt__(self, other): # self < other
+        return not (self > other)
+
+    def __eq__(self, other): # self == other
+        return (set(self.items), self.total) == (set(other.items), other.total)
+        #return  self.items == other.items and self.total == other.total
+
+    def __contains__(self, item): # item in self
+        return item in self.items
+
+    def __getitem__(self, idx): # self[idx]
+        return self.items[idx]
+
+    def __iter__(self):  # for item in self
+        #return iter(self.items)
+        for item in self.items:
+            yield item
+
+    def add_item(self, item, price):
+        self.items.append(item)
+        self.total += price
+
+# генератор квадратів чисел
+
+# def square_range(finish):
+#     for num in range(finish):
+#         yield num**2
+#
+#
+# for num in square_range(5):  # yield
+#     print(num)
+#
+# num = square_range(5)  # return
+# a = 1
+# b = 2
+#
+# c = a + b
+#
+
+cart1 = Cart(['TV', 'laptop'], 170)
+cart2 = Cart(['phone'], 65)
+
+cart3 = Cart(['laptop', 'TV'], 170)
+
+print(cart1 == cart3)
 
 #
-# figures = []
-# for _ in range(3):
-#     figure = create_figure()
+# print(cart1)
+# text = str(cart2)
+# print(text)
 #
-#     if figure is not None:
-#         figures.append(figure)
+# print(f"Кошик1: кількість товарів: {len(cart1)}")
 #
-# print(figures)
+# cart3 = cart1 + cart2
+# print(cart3)
+# print(f"Кошик3: кількість товарів: {len(cart3)}")
 #
-# for figure in figures:
-#     figure.display_info()
-
-# Завдання 3
-# Створіть наступні класи:
-#  Car – атрибути speed
-#  Bicycle – атрибути speed
-#  Boat – атрибути speed
-# Методи:
-#  move() – виводить повідомлення про рух
-# o Car – їде по шосе зі швидкістю
-# o Bicycle – їде по дорозі зі швидкістю
-# o Boat – пливе по воді зі швидкістю
-#  check_speed(speed) – перевіряє чи правильна швидкість,
-# якщо ні то в __init__ треба викикати ValueError з
-# відповідним повідомленням
-# o Car – від 20 до 200
-# o Bicycle – від 10 до 30
-# o Boat – від 0 до 50
-# Напишіть функцію create_vehicle() яка запитує у
-# користувача тип транспорту та потрібні атрибути і повертає
-# об’єкт.
-# Створіть декілька транспортних засобів, добавте їх у список
-# та для кожної викличте відповідні методи.
-
-class Car:
-    def __init__(self, speed):
-        self.check_speed(speed)
-        self.speed = speed
-
-    def move(self):
-        print(f"Car – їде по шосе зі швидкістю {self.speed}")
-
-    @staticmethod
-    def check_speed(speed):
-        if speed < 20 or speed > 200:
-            raise ValueError("Speed not in diapazon 20-200")
-
-
-class Bicycle:
-    def __init__(self, speed):
-        self.speed = speed
-
-    def move(self):
-        print(f"Bicycle – їде по дороз зі швидкістю {self.speed}")
-
-    @staticmethod
-    def check_speed(speed):
-        if speed < 10 or speed > 30:
-            raise ValueError("Speed not in diapazon 10-30")
-
-
-class Boat:
-    def __init__(self, speed):
-        self.speed = speed
-
-    def move(self):
-        print(f"Boat – пливе по воді зі швидкістю {self.speed} ")
-
-    @staticmethod
-    def check_speed(speed):
-        if speed < 0 or speed > 50:
-            raise ValueError("Speed not in diapazon 0-50")
-
-
-def create_vehicle():
-    try:
-        print("Chose one of transport: Car, Bicycle, Boat")
-        veihicle, speed = input("Enter type of transport and speed").split()
-        speed = int(speed)
-        veihicle = veihicle.capitalize()
-    except Exception as err:
-        print(err)
-    try:
-        if veihicle == "Car":
-            return Car(speed)
-        elif veihicle == "Bicycle":
-            return Bicycle(speed)
-        elif veihicle == "Boat":
-            return  Boat(speed)
-        else:
-            print("Not known")
-    except ValueError as err:
-        print(err)
-
-
-# Створіть наступні класи:
-#  Manager – атрибути name, base_salary
-#  Developer – атрибути name, base_salary, work_experience
-#  Intern – атрибути name, base_salary
-# Методи:
-#  print_salary() – менеджер отримує базову ставку,
-# розробник отримує на 20% більше якщо стаж більше 4
-# років, інтерн отримує половину базової ставки
-
-# Напишіть функцію create_worker() яка запитує у
-# користувача тип працівника та потрібні атрибути і повертає
-# об’єкт.
-# Створіть декілька співробітників, добавте їх у список та для
-# кожного викличте відповідні методи.
-
-class Manager:
-    def __init__(self, name, base_salary):
-        self.name = name
-        self.base_salary = base_salary
-
-    def print_salary(self):
-       print(f"менеджер {self.name} отримує {self.base_salary}")
-
-
-class Developer:
-    def __init__(self, name, base_salary, work_experience):
-        self.name = name
-        self.base_salary = base_salary
-        self.work_experience = work_experience
-
-    def print_salary(self):
-        if self.work_experience > 4:
-            salary = self.base_salary*1.2
-        else:
-            salary = self.base_salary
-
-        print(f"розробник {self.name} отримує {salary}")
-
-
-class Intern:
-    def __init__(self, name, base_salary):
-        self.name = name
-        self.base_salary = base_salary
-
-    def print_salary(self):
-        print(f"інтерн {self.name} отримує {self.base_salary/2}")
-
-
-def create_worker():
-    print("тип працівника: manager, developer, intern")
-    worker_type = input("Введіть тип працівника: ").lower()
-    name = input("Введіть им’я працівника: ").capitalize()
-    base_salary = int(input("Введіть базову ставку: "))
-
-    if worker_type == "developer":
-        work_experience = int(input("Введіть стаж: "))
-        return Developer(name, base_salary, work_experience)
-    elif worker_type == "manager":
-        return Manager(name, base_salary)
-    elif worker_type == "intern":
-        return Intern(name, base_salary)
-    else:
-        print("Помилка! тип працівника: manager, developer, intern")
-
-
-worker = create_worker()
-worker.print_salary()
-
-
-# Завдання 3
-# Створіть наступні класи:
-#  Car – атрибути speed
-#  Bicycle – атрибути speed
-#  Boat – атрибути speed
-# Методи:
-#  move() – виводить повідомлення про рух
-# o Car – їде по шосе зі швидкістю
-# o Bicycle – їде по дорозі зі швидкістю
-# o Boat – пливе по воді зі швидкістю
-#  check_speed(speed) – перевіряє чи правильна швидкість,
-# якщо ні то в __init__ треба викикати ValueError з
-# відповідним повідомленням
-# o Car – від 20 до 200
-# o Bicycle – від 10 до 30
-# o Boat – від 0 до 50
-# Напишіть функцію create_vehicle() яка запитує у
-# користувача тип транспорту та потрібні атрибути і повертає
-# об’єкт.
-# Створіть декілька транспортних засобів, добавте їх у список
-# та для кожної викличте відповідні методи
-
-class Car:
-    def __init__(self, speed):
-        self.check_speed(speed)
-        self.speed = speed
-
-    def move(self):
-        print(f"Автомобіль їде по шосе зі швидкістю {self.speed}")
-
-    @staticmethod
-    def check_speed(speed):
-        if speed < 20 or speed > 200:
-            raise ValueError("Швидкість не відповідає діапазону [20 .. 200].")
-
-
-class Bicycle:
-    def __init__(self, speed):
-        self.check_speed(speed)
-        self.speed = speed
-
-    def move(self):
-        print(f"Велосипед їде по дорозі зі швидкістю {self.speed}")
-
-    @staticmethod
-    def check_speed(speed):
-        if speed < 10 or speed > 30:
-            raise ValueError("Швидкість не відповідає діапазону [10 .. 30].")
-
-
-class Boat:
-    def __init__(self, speed):
-        self.check_speed(speed)
-        self.speed = speed
-
-    def move(self):
-        print(f"Човен пливе по воді зі швидкістю {self.speed}")
-
-    @staticmethod
-    def check_speed(speed):
-        if speed < 0 or speed > 50:
-            raise ValueError("Швидкість не відповідає діапазону [0 .. 50].")
-
-
-
-def create_vehicle():
-    try:
-        print("Доступний транспорт: Car, Bicycle, Boat")
-        vehicle, speed = input("Введіть назву транспорту та швидкість через пробєл: ").split()
-        vehicle = vehicle.capitalize()
-        speed = int(speed)
-    except Exception as err:
-        print(err)
-        return
-
-    try:
-        if vehicle == "Car":
-            return Car(speed)
-        elif vehicle == "Bicycle":
-            return Bicycle(speed)
-        elif vehicle == "Boat":
-            return Boat(speed)
-        else:
-            print("Невірно введено назву транспорту.")
-    except ValueError as err:
-        print(err)
-
-vehicle = create_vehicle()
-
-if vehicle is not None:
-    vehicle.move()
-
-
+# if cart3 > cart2:
+#     print('Кошик 3 більший')
+#
+#
+# max_cart = max(cart1, cart2)
+# print(max_cart)
+#
+#
+# carts = [cart3, cart2, cart1]
+# print()
+# print()
+# print('кошики до сортування')
+# for cart in carts:
+#     print(cart)
+#
+# carts.sort()
+# print()
+# print()
+# print('кошики після сортування')
+# for cart in carts:
+#     print(cart)
+#
+# print()
+# print()
+#
+# print("Apple" in cart1)
+# print("TV" in cart1)
+# print("Apple" not in cart1)
+#
+# print()
+# print()
+#
+# second_item = cart3[1]
+# print(second_item)
+#
+# print()
+# print()
+#
+# for item in cart3:  # iter(cart3)
+#     print(item)
