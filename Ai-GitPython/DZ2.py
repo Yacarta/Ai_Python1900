@@ -20,3 +20,30 @@
 #
 # Recipe("Суп",        ["вода", "картопля", "морква", "м'ясо"],
 #        "Варимо всі інгредієнти до готовності",        45)
+
+class Recipe:
+    def __init__(self, name, ingredients, text, time):
+        self.name = name
+        self.ingridients = ingredients
+        self.text = text
+        self.time = time
+
+    def __str__(self):
+        return f"Назва страви {self.name}"
+
+    def __contains__(self, item):
+        return item in self.igredients
+
+    def __gt__(self, other):
+        return self.time > other.time
+
+    def display_info(self):
+        print("-" * 10)
+        print(f"Назва страви '{self.name}'")
+
+
+
+
+
+
+
