@@ -24,26 +24,41 @@
 class Recipe:
     def __init__(self, name, ingredients, text, time):
         self.name = name
-        self.ingridients = ingredients
+        self.ingredients = ingredients  # Fixed typo
         self.text = text
         self.time = time
 
     def __str__(self):
-        return f"Назва страви {self.name}"
+        return f"Назва страви: {self.name}"
 
     def __contains__(self, item):
-        return item in self.igredients
+        return item in self.ingredients  # Fixed typo
 
     def __gt__(self, other):
         return self.time > other.time
 
     def display_info(self):
-        print("-" * 10)
-        print(f"Назва страви '{self.name}'")
+        print("-" * 20)
+        print(f"Назва страви: \n '{self.name}'")
+        print("-" * 20)
+        print("Інгредієнти:")
+        for ingredient in self.ingredients:
+            print(f"- {ingredient}", end=" ")
 
 
 
 
 
+recipe1 = Recipe("Піца",
+       ["борошно", "вода", "дріжджі", "томат", "сир"],
+       "Готуємо тісто, додаємо інгредієнти та запікаємо",
+       30)
 
+recipe2 = Recipe("Салат",        ["томат", "огірок", "зелень", "олія"],
+       "Нарізаємо овочі, додаємо зелень та поливаємо олією ", 10)
+
+recipe3 = Recipe("Суп",        ["вода", "картопля", "морква", "м'ясо"],
+       "Варимо всі інгредієнти до готовності",        45)
+
+recipe1.display_info()
 
