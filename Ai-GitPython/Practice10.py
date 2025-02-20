@@ -2,6 +2,7 @@
 #
 # #опис класу
 #
+
 # class Dog:
 #     #constructor
 #     def __init__(self, name, age, weight):
