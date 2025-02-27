@@ -1,72 +1,27 @@
-# Завдання 1
-# Створіть наступні класи:
-#  CreditCardPayment – атрибути currency
-#  PayPalPayment – атрибути currency
-#  CryptoPayment – атрибути currency
+#  Завдання 1
+# Створіть клас Pet з атрибутами
+#  name – ім’я тварини
+#  satiety – рівень ситості(від 0 до 100, за замовчуванням 50)
+#  energy – рівень енергії (від 0 до 100, за замовчуванням 50)
+# Методи:
+#  sleep() – збільшує energy до 100
+#  eat(food_amont) – їсть, збільшує satiety на food_amount
+#  play(activity_level) – абстрактний метод
+#  make_sound() – просто pass
+# Створіть клас Cat
+# Методи:
+#  play(activity_level) – якщо satiety > 60, зменшує energy на
+# 2*acticity_level та satiety на acticity_level
+#  make_sound() – виводить ‘Мяу’
+#  catch_mouse() – якщо  energy > 30, ловить мишу. Якщо
+# satiety > 40, то грається з мишею, інакше їсть
+# Створіть клас Dog
+# Методи:
+#  play(activity_level) – якщо satiety > 15, зменшує energy на
+# acticity_level//2 та satiety на acticity_level//2
+#  make_sound() – виводить ‘Гав’
+#  fetch_ball() – ловить м’яча якщо satiety>10, зменшує
+# energy на 5
+import abc from ABC
 
-# # Методи:
-# #  pay(amount) – виводить повідомлення
-# # o CreditCardPayment – оплата карткою {amount}{currency}
-# # o PayPalPayment – оплата PayPal {amount}{currency}
-# # o CryptoPayment – оплата криптогаманцем {amount}{currency}
-#
-# # Напишіть функцію create_payment() яка запитує у  користувача тип рахунку та потрібні атрибути і повертає # об’єкт.
-# # Створіть декілька рахунків, добавте їх у список та для  кожної викличте відповідні методи.
-#
-#
-class CreditCardPayment:
-    def __init__(self, currency):
-        self.currency = currency
-
-    def pay(self, amount):
-        print(f"Оплата CreditCard {amount} {self.currency} ")
-
-
-class PayPalPayment:
-    def __init__(self, currency):
-        self.currency = currency
-
-    def pay(self, amount):
-        print(f"Оплата PayPal {amount} {self.currency} ")
-
-
-class CryptoPayment:
-    def __init__(self, currency):
-        self.currency = currency
-
-    def pay(self, amount):
-        print(f"Оплата Crypto {amount} {self.currency} ")
-
-# Напишіть функцію create_payment() яка запитує у  користувача тип рахунку та потрібні атрибути і повертає # об’єкт.
-# Створіть декілька рахунків, добавте їх у список та для  кожної викличте відповідні методи.
-def create_payment():
-    print("Типи оплати: CreditCard, PayPal, Crypto")
-    type_account = input("Введіть тип оплати: ")
-    currency = input("Введіть тип валюти: ")
-
-    if type_account == "CreditCard":
-        return CreditCardPayment(currency)
-    elif type_account == "PayPal":
-        return PayPalPayment(currency)
-    elif type_account == "Crypto":
-        return CryptoPayment(currency)
-    else:
-        print("Неправильний тип оплати!")
-        return None
-
-
-
-payments = []
-for i in range(3):
-    payment = create_payment()
-    if payment:
-        payments.append(payment)
-
-
-for payment in payments:
-    amount = float(input(f"Введіть сумму: "))
-    # amount = float(input(f"Введіть сумму для оплати з {payment}: "))
-    payment.pay(amount)
-
-
-client = create_payment()
+class Pet(ABC):
