@@ -22,6 +22,21 @@
 #  make_sound() – виводить ‘Гав’
 #  fetch_ball() – ловить м’яча якщо satiety>10, зменшує
 # energy на 5
-import abc from ABC
+from abc import ABC, abstractmethod
 
 class Pet(ABC):
+    def __init__(self, satiety=50, energy=50):
+        self.satiety = satiety
+        self.energy = energy
+
+    # – збільшує  energy до 100
+    def sleep(self):
+        self.energy = 100
+
+    #– їсть, збільшує satiety на food_amount
+    def eat(self, food_amont) :
+        self.satiety += food_amont
+        self
+    #  play(activity_level) – абстрактний метод
+    #  make_sound() – просто pass
+
