@@ -1,295 +1,205 @@
-# наслідування
-
-# class Parent:
-#     def __init__(self, name, age):
-#         self.name = name
-#         self.age = age
+# # наслідування
 #
-#     def show_info(self):
-#         print(f"клас Parent")
-#         print(f'{self.name}, {self.age} років')
+# # переведення числа в діапазон [0, 100]
 #
+# value = -10
 #
-# class Child(Parent):
-#     def play(self):   # новий метод
-#         print('клас Child')
-#         print(f'{self.name} грається')
+# # варіант через if
+# # if value > 100:
+# #     value = 100
+# # elif value < 0:
+# #     value = 0
 #
-#     def show_info(self):  # перевизначений метод
-#         print(f"клас Child")
-#         print(f'{self.name}, {self.age} років')
+# # через min max
 #
+# value = -10
+# new_value = min(value, 100)
+# new_value = max(new_value, 0)
 #
-# class Daughter(Parent):
-#     def __init__(self, name, age, dream):
-#         self.name = name
-#         self.age = age
-#         self.dream = dream
+# new_value = max(0, min(100, value))  # clip
 #
-#
-# # mother = Parent('Marry', 36)
-# # mother.show_info()
-# #
-# # print()
-# #
-# # child = Child('Rony', 8)
-# # child.show_info()
-# # child.play()
-#
-# # daughter = Daughter("Linda", 10, 'became a doctor')
-# # daughter.show_info()
-#
-# # код з класом Parent
-# mother = Parent('Marry', 36)
-# mother.show_info()
+# print(new_value)
 
+# використання методів батьківського класу
+from abc import ABC, abstractmethod
 
-
-# класи для Транспортні засоби
-
-class Vehicle:
-    def __init__(self, owner,  # власник
-                 max_fuel_level,  # максимальний рівень пального
-                 milliage  # км / 1 літр пального
-                 ):
-        self.owner = owner
-        self.max_fuel_level = max_fuel_level
-        self.fuel_level = max_fuel_level # бак повний
-        self.milliage = milliage
-
-    def move(self, speed, distance):
-        need_fuel = distance / self.milliage
-
-        if self.fuel_level < need_fuel: # не хватає пального
-            print('не хватає пального')
-        else:
-            self.fuel_level -= need_fuel
-            time = distance / speed
-
-            print(f"Проїхали {distance}км за {time}год")
-
-
-    def add_fuel(self, fuel):
-        self.fuel_level += fuel
-
-class Car(Vehicle):
-    pass
-
-
-class Bicycle(Vehicle):
-    def __init__(self, owner, max_fuel_level, milliage):
-        self.owner = owner
-        self.max_fuel_level = max_fuel_level
-        self.fuel_level = max_fuel_level  # бак повний
-        self.milliage = milliage
-
-        self.used_motor = False # мотор виключений
-
-
-    def move(self, speed, distance):  # теж рухається але не трабе пального
-        if not self.used_motor:
-            time = distance / speed
-            print("Без пального")
-            print(f"Проїхали {distance}км за {time}год")
-            return
-
-        # мотор вклюсений(код з Vehicle.move)
-
-        need_fuel = distance / self.milliage
-
-        if self.fuel_level < need_fuel:  # не хватає пального
-            print('не хватає пального')
-        else:
-            self.fuel_level -= need_fuel
-            time = distance / speed
-
-            print("З пальним")
-            print(f"Проїхали {distance}км за {time}год")
-
-    def turn_on(self):
-        self.used_motor = True
-
-    def turn_off(self):
-        self.used_motor = False
-
-
-class Plane(Vehicle):
-    pass
-
-
-
-# bike = Bicycle('John', 100, 50)
-# bike.move(20, # швидкість
-#          15  # кілометри
-#          )
-#
-# bike.turn_on()
-#
-# bike.move(40,
-#           100)
-#
-#
-#
-#
-# car = Vehicle('John', 100, 50 )
-# car.move(80,200)
-
-#  Завдання 1
-# Створіть абстрактний клас Character, атрибути
-#  name – ім’я
-#  max_hp – максимальний рівень здоров’я
-#  hp – нинішній рівень здоров’я
-#  level – рівень персонажа(від 1 до 20)
-#  intelligence – стат інтелекту
-#  strength – стат сили
-#  dexterity – стат спритності
-#  mana – стат мани
-#  defense –  стат захисту
-# Методи:
-#  attack() – абстрактний метод
-#  take_damage(damage) – отримує урон, зменшений на
-# захист
-#  level_up() – збільшує рівень
-#  increase_stat(stat) – збільшує один з статів на 1
-#  rest() – відпочинок(відновлює hp до максимального)
-#  heal(heal_hp) – збільшує hp на heal_hp
-
-class Character():
-    def __init__(self, name, max_hp, level, intelligence, strength, dexterity, mana, defense):
+class Animal(ABC):  # абстрактний клас(не можна створити об'єкт)
+    @abstractmethod
+    def __init__(self, name, age):
+        self._check_name(name)
+        self._check_age(age)
         self.name = name
-        self.max_hp = max_hp
-        self.hp = max_hp
-        self.level = level
-        self.intelligence = intelligence
-        self.strength = strength
-        self.dexterity = dexterity
-        self.mana = mana
-        self.defense = defense
+        self.age = age
 
-    def attack(self):
-        pass
+    def _check_name(self, name):
+        # перевірка чи тип даних str
+        if not isinstance(name, str):
+            raise ValueError(f"Ім'я має бути рядком, отримано тип {type(name)}")
 
-    def take_damage(self, damage):
-        if damage > self.defense:
-            self.hp -= damage - self.defense
+        # лише літери та символи ' ' '-'
+        for sym in name:
+            if not(sym.isalpha() or sym in ' -'):
+                raise ValueError("Ім'я має складатися лише з літер та ' -'")
 
-        if self.hp <= 0:
-            self.hp = 0
-            print(f"{self.name} загинув!")
+    def _check_age(self, age):
+        # перевірка чи тип даних int float
+        if not isinstance(age, (int, float)):
+            raise ValueError(f"Вік має бути числом, отримано тип {type(age)}")
 
-    def level_up(self):
-        if self.level < 20:
-            self.level += 1
+        if age <= 0 or age >= 20:
+            raise ValueError(f"Вік має бути в діапазоні [0, 20]")
 
-    def increase_stat(self, stat):
-        if stat == 'intelligence':
-            self.intelligence += 1
-        elif stat == 'strength':
-            self.strength += 1
-        elif stat == "dexterity":
-            self.dexterity += 1
-        elif stat == "mana":
-            self.mana += 1
+
+    def info(self):
+        print(f"Ім'я: {self.name}, {self.age} років")
+
+
+class Cat(Animal): # name, age, is_vaccinated
+    def __init__(self, name, age, is_vaccinated=True):
+        super().__init__(name, age)
+        self.is_vaccinated = is_vaccinated
+
+    def catch_mouse(self):
+        print("Ловить мишу")
+
+    def info(self):  # додатково писало що це кіт
+        print("Кіт")
+        # super() # super -- батьківський клас
+        super().info() # info з класу Animal
+
+        if self.is_vaccinated:
+            print("Вакцинований")
         else:
-            self.defense += 1
+            print("Потрібно вакцинувати")
 
-    def rest(self):
-        self.hp = self.max_hp
 
-    def heal(self, heal_hp):
-        self.hp += heal_hp
-        if self.hp > self.max_hp:
-            self.hp = self.max_hp
+# cat1 = Cat('Tom', 5)
+# cat1.info()
+# #cat1.catch_mouse()
+# print()
+#
+# cat = Animal('Roger', 10)
+# cat.info()
+
+# приховані атрибути\методи
+
+class Cat(Animal): # name, age, is_vaccinated
+    def __init__(self, name, age, is_vaccinated=True):
+        super().__init__(name, age)
+        self._is_vaccinated = is_vaccinated  # прихований атрибут
+
+    def catch_mouse(self):
+        print("Ловить мишу")
+
+    def info(self):  # додатково писало що це кіт
+        print("Кіт")
+        # super() # super -- батьківський клас
+        super().info() # info з класу Animal
+
+        if self._is_vaccinated:
+            print("Вакцинований")
+        else:
+            print("Потрібно вакцинувати")
+
+    def vaccinate(self):
+        self._is_vaccinated = True
+
+    def unvaccinate(self):
+        self._is_vaccinated = False
+
+
+class Kitten(Cat):
+    pass
+
+
+cat1 = Cat('Tom', 2.5)
+
+cat1.info()
+
+cat1.unvaccinate()
+
+cat1.info()
+
+# print(cat1._Cat__is_vaccinated)
+
+kitten = Kitten("Murchyck", 1)
+kitten.info()
+
+# Завдання 1
+# Створіть абстрактний клас Robot з атрибутами:
+#  name – назва робота або id
+#  battery_level – рівень заряду(за замовчуванням 100%)
+#  status – поточний стан (один з on, off, working)
+# Методи:
+#  info() – виводить інформацію
+#  charge() – відновлює заряд до 100%
+#  turn_on() – змінює стан на on
+#  turn_off() – змінює стан на off
+
+
+
+
+
+
+
+
+
+
 
 
 # Завдання 2
-# Створіть дочірній клас Paladin
+# Створіть дочірній клас CleaningRobot
+# Додаткові атрибути:
+#  dust_capacity – ємність контейнеру для пилу(за
+# замовчуванням 0%)
+#  water_capacity – ємність контейнеру для води(за
+# замовчуванням 100%)
+#  cleaning_mode – тип прибирання(вологе або сухе)
 # Методи:
-#  attack() – наносить 4*strength урону та зменшує mana на
-# 5, якщо недостатньо, то наносить strength урону
-#  shield() – збільшує стат defense на 4+level
-#  unshield() – зменшує стат defense на 4+level
-#  heal_ally(ally) – лікує союзника на 5 + 2*level + 0.5*mana
-
-class Paladin(Character):
-    def attack(self):
-        if self.mana >= 5:
-            dam = 4 * self.strength
-            self.mana -= 5
-        else:
-            dam = self.strength
-        return dam
-
-
-    def shield(self):
-        self.defense += 4 + self.level
-
-    def unshield(self):
-        self.defense -= 4 + self.level
-
-    def heal_ally(self, ally):
-        heal_hp = 5 + 2*self.level + 0.5*self.mana
-
-        ally.heal(heal_hp)
-
-paladin1 = Paladin("Ivan", 100, 6, 5, 5, 3, 6, 5)
-paladin2 = Character("Igor", 100, 6, 5, 5, 3, 6, 5)
-
-paladin2.take_damage(10)
-
-print(paladin2.hp)
-
-paladin1.heal_ally(paladin2)
-
-print(paladin2.hp)
-
+#  info() – додатково виводить інформацію про робота
+#  turn_on() – якщо контейнер для пилу повний або
+# контейнер для води порожній то виводить повідомлення,
+# інакше запускається turn_on() з класу Robot
+#  empty_dustbin() – очищає контейнер для пилу
+#  fill_water() – заповнює контейнер для води
+#  swap_mode() – змінює тип прибирання на протилежний
+#  clean(energy, dust, water=None) – чистить поверхню,
+# якщо прибирання сухе, то просто перенести пил у
+# контейнер(якщо місця не достатньо вивести помилку),
+# якщо прибирання вологе то додатково витратити воду.
+# Також зменшує рівень заряду на energy
 # Завдання 3
-# Створіть дочірній клас Mage
+# Створіть дочірній клас SecurityRobot
+# Додаткові атрибути:
+#  min_speed – мінімальна швидкість руху, щоб помітити
+# об’єкт
+#  alert_level – рівень небезпеки (low, middle, high)
+#  dangerous_items – список небезпечних предметів(gun,
+# knife, bat)
 # Методи:
-#  attack() – наносить 3*intelligence+4 урону та зменшує
-# mana на 3, якщо недостатньо, то не наносить урону
-#  fireball() – наносить 2*intelligence+3 урону по області та
-# зменшує mana на 5, якщо недостатньо, то не наносить
-# урону
-#  heal_ally(ally) – лікує союзника на 3 + level +
-# 3*intelligence
-class Mage(Character):
-
-    def attack(self):
-        if self.mana >= 3:
-            dem = 4 +3* self.intelligence
-            self.mana -= 3
-            return  dem
-        else:
-            return 0
-
-
-    def fireball(self):
-        if self.mana >= 5:
-            dem = 3 +2 * self.intelligence
-            self.mana -= 5
-            return  dem
-        else:
-            return 0
-
-    def heal_ally(self, ally):
-        heal.hp = 3 + self.level + 3*self.intelligence
-        ally.heal(heal_hp)
-
-
-
-
-
-
+#  info() – додатково виводить інформацію про робота
+#  turn_off() – перед виключенням змінює рівень небезпеки
+# на low
+#  add_dangerous_item(item) – додає небезпечний предмет
+#  remove_dangerous_item(item) – видаляє небезпечний
+# предмет
+#  detect(speed, item) – виявляє загрозу
+# o якщо швидкість занизька, то ігноруємо
+# o якщо швидкість велика, то рівень небезпеки
+# middle
+# o якщо це небезпечний предмет, то рівень
+# небезпеки high
+# Рівень небезпеки не може стати нижчим
 # Завдання 4
-# Створіть дочірній клас Warrior
+# Створіть дочірній клас AssistantRobot
+# Додаткові атрибути:
+#  tasks – список завдань(за замовчуванням порожній)
+#  current_task – поточне завдання(за замовчуванням None)
 # Методи:
-#  attack() – наносить 4*strength+3 урону
-#  power_strike(enemies) – проходить по списку ворогів:
-# якщо їхній рівень менший за рівень персонажа, то
-# знищує його повністю
-# Завдання 5
-# Створіть дочірній клас Rogue
-# Методи:
-#  attack() – наносить strength+level урону
-
+#  info() – додатково виводить інформацію про робота
+#  add_task(task) – додає завдання до списку
+#  change_task() – змінює поточне завдання, виводить на
+# екран список завдань та просить користувача вибрати
+# одне з них
+#  execute_task() – виконує поточне завдання, видяляє його
+# зі списку, та змінює current_task на наступне
