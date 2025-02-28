@@ -18,3 +18,26 @@
 #  move(destination, distance) – висаджує всіх пасажирів, які
 # хочуть вийти в даному місці(виводить їхню загальну
 # кількість) та викликає батьківський метод move()
+from abc import ABC
+
+class Passenger(ABC):
+    def __init__(self, name, destination):
+        self.name = name
+        self.destination = destination
+
+class Transport():
+    def __init__(self, speed):
+        self.speed = speed
+
+    def move(self, destination, distance):
+        pass
+
+class Bus():
+    def __init__(self, passengers, capacity):
+        pass
+
+    def board_passenger(self, passenger):
+        pass
+
+    def move(self, destination, distance):
+        pass
