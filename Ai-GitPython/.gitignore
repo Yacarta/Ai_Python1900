@@ -81,6 +81,7 @@ htmlcov/
 coverage.xml
 *.py,cover
 
+
 # MyPy
 .mypy_cache/
 .dmypy.json
