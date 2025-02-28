@@ -26,17 +26,71 @@ from abc import ABC, abstractmethod
 
 class Pet(ABC):
     def __init__(self, satiety=50, energy=50):
-        self.satiety = satiety
-        self.energy = energy
+        self.satiety = max(0, min(satiety, 100))
+        self.energy = max(0, min(energy, 100))
 
     # – збільшує  energy до 100
     def sleep(self):
+        print("sleep")
         self.energy = 100
 
     #– їсть, збільшує satiety на food_amount
     def eat(self, food_amont) :
-        self.satiety += food_amont
-        self
-    #  play(activity_level) – абстрактний метод
-    #  make_sound() – просто pass
+        self.satiety = min(100, self.satiety+food_amont)
+
+    def  play(self, activity_level):
+        pass
+
+    def make_sound(self):
+        pass
+
+class Cat(Pet):
+    def play(self, activity_level):
+        if self.satiety > 60:
+            self.energy =max(0, self.energy - 2* activity_level)
+            self.satiety = max(0, self.satiety -  activity_level)
+        print(f" Ситість: {self.satiety}, Енергія: {self.energy}")
+
+    def  make_sound(self):
+        print('Мяу')
+
+    def catch_mouse(self):
+        if self.energy > 30:
+            print('ловить мишу')
+        elif self.energy > 40:
+            print('грається з мишею')
+        else:
+            print('їсть')
+
+
+class Dog(Pet):
+    def play(self, activity_level):
+        if self.satiety > 15:
+            self.energy = max(0,self.energy- activity_level / 2)
+            self.satiety = max(0,self.satiety- activity_level/2)
+            print(f" Ситість: {my_cat.satiety}, Енергія: {my_cat.energy}")
+        else:
+            self.energy = max(0,self.energy- activity_level)
+            self.satiety = max(0,self.satiety- activity_level)
+            print(f" Ситість: {my_cat.satiety}, Енергія: {my_cat.energy}")
+
+    def  make_sound(self):
+        print('Гав')
+
+    def  fetch_ball(self):
+        print('ловить м’яча')
+        if self.satiety > 10:
+            self.energy = max(0, self.energy-5)
+
+
+cat1 = Cat(20,30)
+cat1.make_sound()
+cat1.catch_mouse()
+cat1.play(20)
+cat1.catch_mouse()
+cat1.eat(70)
+cat1.sleep()
+
+print(f" Ситість: {cat1.satiety}, Енергія: {cat1.energy}")
+
 
