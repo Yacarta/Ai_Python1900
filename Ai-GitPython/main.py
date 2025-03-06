@@ -212,6 +212,133 @@ while not stack.is_empty():
     last_char = stack.pop_end()
     new_text = last_char + new_text
 
-print(new_text)
+#print(new_text)
+# авдання 2
+# Використовуючи стек створіть клас EnterNumber для
+# введення числа в рядку
+# Атрибути:
+#  digits – стек з введеними цифрами
+# Методи:
+#  add(digit) – додати нову цифру, вивести помилку якщо
+# не цифра
+#  undo() – видалити останню цифру
+#  get_number() – повернути число
+#  clear() – очистити стек
 
-d(2)
+class EnterNumber:
+    def __init__(self):
+        self.digits = DoubleLinkedList()
+
+    def add_didg(self, digit):
+        self.digits.push_end(digit)
+
+    def undo(self):
+        self.digits.pop_end()
+
+    def get_number(self):
+        num_str = ''
+
+        while not self.digits.is_empty():
+            if self.digits.peek().isdigit():
+                num_str = self.digits.pop_end() + num_str
+            else:
+                raise ValueError("In text not only digit. Operation is break.")
+
+        return int(num_str)
+
+    def clear(self):
+        self.digits = DoubleLinkedList()
+
+
+
+# reader = EnterNumber()
+# dig = input("Enter the digit: ")
+# reader.add_didg(dig)
+# dig = input("Enter the digit: ")
+# reader.add_didg(dig)
+# dig = input("Enter the digit: ")
+# reader.add_didg(dig)
+#
+# reader.clear()
+#
+# dig = input("Enter the digit: ")
+# reader.add_didg(dig)
+#
+#
+# print(reader.get_number())
+# # print()
+#
+# авдання 1
+# Використовуючи стек створіть клас WebHistory
+# Атрибути:
+#  history – стек з історією відвідування веб сторінок
+#  forward_history – стек з веб сторінками, для повернення
+# «вперед»
+# Методи:
+#  add(page) – перейти на нову сторінку
+#  undo() – повернутись на попередню сторінку
+#  redo() – перейти вперед
+#  get_current_page() – повернути поточну сторінку
+class WebHistory:
+    def __init__(self):
+        self.history = DoubleLinkedList()
+        self.forward_history = DoubleLinkedList()
+
+    def add(self, page):
+        self.history.push_end(page)
+        self.forward_history = DoubleLinkedList()
+
+    def undo(self):
+        page = self.history.pop_end()
+        self.forward_history.push_end(page)
+
+    def redo(self):
+        redo_page = self.forward_history.pop_end()
+        self.history.push_end(redo_page)
+
+
+    def get_current_page(self):
+        return self.history.peek()
+
+# Є вираз з дужками, за допомогою стеків визначіть чи
+# правильно розтавлені дужки, якщо ні то виведіть індекс
+# «проблемної» дужки.
+# def highlight_character(text, ind):
+#     for i, char in enumerate(text, start=1):
+#         if i == ind:
+#             print(f"\033[91m{char}\033[0m", end="")
+#         else:
+#             print(char, end="")
+#     print()
+#
+#
+# text = "2+(3*[5+6])/{(1+5+7)-(1+[-8])}"
+#
+# stack = DoubleLinkedList()
+#
+# is_correct = True
+#
+# for char in text:
+#     if char in "([{":
+#         stack.push_end(char)
+#     elif char in ")]}":
+#         if stack.is_empty():
+#             is_correct = False
+#             break
+#
+#         last_char = stack.pop_end()
+#
+#         if last_char + char in ["()", '[]', '{}']:
+#             is_correct = True
+#         else:
+#             is_correct = False
+#             break
+#
+# if not stack.is_empty():
+#     is_correct = False
+#
+#
+# print(is_correct)
+#
+#
+# highlight_character(text, 10)
