@@ -184,15 +184,15 @@ class SinglyLinkedList:
 
 
 
-
-data = SinglyLinkedList()
-data.push_end(10)
-data.push_end(2)
-data.push_end(3)
-data.push_start(5)
-print(data)
-data.pop_start()
-print(data)
+#
+# data = SinglyLinkedList()
+# data.push_end(10)
+# data.push_end(2)
+# data.push_end(3)
+# data.push_start(5)
+# print(data)
+# data.pop_start()
+# print(data)
 
 # Створіть клас двозв’язного списку DoubleLinkedList
 # Методи
@@ -202,3 +202,11 @@ print(data)
 #  push_start(data) – добавити на початку
 #  pop_end() – видалити останній елемент
 #  pop_start() – видалити перший елемент
+
+nums = [0,1,4]
+print(max(nums))
+print(nums)
+nums[1] +=1
+print(nums)
+ind = nums.index(max(nums))
+print(ind)
