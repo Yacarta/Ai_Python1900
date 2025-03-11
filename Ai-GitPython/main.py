@@ -1,54 +1,9 @@
-# class Shop:
-#     def __init__(self):
-#         self.queue1 = DoublyLinkedList()
-#         self.queue2 = DoublyLinkedList()
-#         self.queue3 = DoublyLinkedList()
-#
-#     def get_queue(self, idx):
-#         if idx == 1:
-#             return self.queue1
-#         elif idx == 2:
-#             return self.queue2
-#         elif idx == 3:
-#             return self.queue3
-#
-#
-#     def add(self, name, idx):
-#         queue = self.get_queue(idx)
-#         queue.push_end(name)
+# rate1 = Banking.exchange_rates[from_currency]
+# rate2 = Banking.exchange_rates[to_currency]
+# return amount * rate1 / rate2
 
-class Passenger:
-    def __init__(self, name, destination):
-        self.name = name
-        self.destination = destination
-
-    def __str__(self):
-        return f"{self.name} - {self.destination}"
-
-    def __repr__(self):
-        return f"{self.name} - {self.destination}"
-
-
-# Завдання 2
-# Створіть клас Transport з атрибутами
-#  speed – швидкість
-# Методи
-#  move(destination, distance) – рухається до місця
-# призначення, виводить інформацію як довго їхали
-
-class Transport:
-    def __init__(self, speed):
-        self.speed = speed
-
-    def move(self, destination, distance):
-        print(f"До місця {destination} їхали {distance // self.speed} годин.")
-
-
-# list1 = []
-# list1[2]  # O(N) -- кількість операцій співрадає(в середньому) з кількітю елементів у списку
-# list1[::-1]  # задом наперед O(N)
-# list1 += [1, 2, 3]  # O(N)
-# list1.append(2)  # O(N)
+import time
+import datetime
 
 class Node:
     def __init__(self, data):
@@ -71,15 +26,20 @@ class DoubleLinkedList:
         """
         self.head = None
         self.tail = None
+        self.count = 0
 
     def __str__(self):
         return str(self.head)
+
+    def __gt__(self, other):
+        return self.count > other.count
 
     def push_end(self, data):
         """
         Додає елемент у кінець списку.
         :param data: Дані для додавання
         """
+        self.count += 1
         new_node = Node(data)
         if not self.head:
             self.head = new_node
@@ -94,6 +54,7 @@ class DoubleLinkedList:
         Додає елемент на початок списку.
         :param data: Дані для додавання
         """
+        self.count += 1
         new_node = Node(data)
         if not self.head:
             self.head = new_node
@@ -108,9 +69,11 @@ class DoubleLinkedList:
         Видаляє останній елемент зі списку.
         :return: Дані видаленого елемента або None, якщо список порожній
         """
+
         if not self.tail:
             return None
 
+        self.count -= 1
         data = self.tail.data
 
         if self.head.next is None:
@@ -131,6 +94,8 @@ class DoubleLinkedList:
         if not self.head:
             return None
 
+
+        self.count -= 1
         data = self.head.data
 
         if self.head.next is None:
@@ -156,189 +121,189 @@ class DoubleLinkedList:
         return self.tail.data
 
 
+class Message:
+    def __init__(self, text):
+        self.text = text
+        #self.time = time.time()  # кількість секунд  1970 року
+        self.time = datetime.datetime.now().time()  # нинішній чис
 
-# stack = DoubleLinkedList()
-# print(stack)
-#
-# stack.push_end(2)  # добавити до стеку
-# print(stack)
-#
-# stack.push_end(4)
-# stack.push_end(1)
-# stack.push_end(5)
-# print(stack)
-#
-#
-# last_num = stack.pop_end()
-# print(f"{last_num=}")
-# print(stack)
-
-# є послідовність символів, видалити дублікати,
-# які знаходяться пору
-
-# abbbccccaaaabbb -> abcab
-
-text = "abbbccccaaaabbb"
-stack = DoubleLinkedList()
-
-for char in text:
-    # якщо стек порожній
-    # print(stack)
-    if stack.is_empty():
-        stack.push_end(char)
-        continue  # переходимо до наступної літери
-
-    # last_char = stack.pop_end()  # дістаємо останню
-    #
-    # if last_char == char:
-    #     # вертаємо last_char назад
-    #     stack.push_end(last_char)
-    # else:
-    #     stack.push_end(last_char)
-    #     stack.push_end(char)
+    def __str__(self):
+        return f"[{self.time}] {self.text}"
 
 
-    # з peek
-    last_char = stack.peek()
-
-    if last_char != char:
-        stack.push_end(char)
-
-
-# перевести стек в str
-new_text = ''
-
-while not stack.is_empty():
-    last_char = stack.pop_end()
-    new_text = last_char + new_text
-
-#print(new_text)
-# авдання 2
-# Використовуючи стек створіть клас EnterNumber для
-# введення числа в рядку
-# Атрибути:
-#  digits – стек з введеними цифрами
-# Методи:
-#  add(digit) – додати нову цифру, вивести помилку якщо
-# не цифра
-#  undo() – видалити останню цифру
-#  get_number() – повернути число
-#  clear() – очистити стек
-
-class EnterNumber:
+# клас для обробки повідомлень
+class Messenger:
     def __init__(self):
-        self.digits = DoubleLinkedList()
+        self.messages = DoubleLinkedList()
 
-    def add_didg(self, digit):
-        self.digits.push_end(digit)
+    def add_message(self, text):
+        # добавити в кінець черги
+        message = Message(text)
 
-    def undo(self):
-        self.digits.pop_end()
+        self.messages.push_end(message)
 
-    def get_number(self):
-        num_str = ''
+    def read_next_message(self):
+        if self.messages.is_empty():
+            print('Повідомлень немає')
+            return
 
-        while not self.digits.is_empty():
-            if self.digits.peek().isdigit():
-                num_str = self.digits.pop_end() + num_str
-            else:
-                raise ValueError("In text not only digit. Operation is break.")
+        # дістає найдавніше повідемлення
+        message = self.messages.pop_start()
 
-        return int(num_str)
-
-    def clear(self):
-        self.digits = DoubleLinkedList()
+        print(f"Читаємо повідомлення: {message}")
 
 
-
-# reader = EnterNumber()
-# dig = input("Enter the digit: ")
-# reader.add_didg(dig)
-# dig = input("Enter the digit: ")
-# reader.add_didg(dig)
-# dig = input("Enter the digit: ")
-# reader.add_didg(dig)
+# m = Messenger()
 #
-# reader.clear()
-#
-# dig = input("Enter the digit: ")
-# reader.add_didg(dig)
+# m.add_message('Hello')
+# time.sleep(1) # чекає 1 секунду
+# m.add_message("What`s up")
+# time.sleep(2) # чекає 2 секунди
+# m.add_message("I`m fine")
 #
 #
-# print(reader.get_number())
-# # print()
+# m.read_next_message()
+# time.sleep(1)
+# m.read_next_message()
+# time.sleep(1)
+# m.read_next_message()
+
+
+# list1 = [1, 2, 3, 4]
+# list2 = ['a', 'hello']
+# list3 = [[1, 2, 3], Node(), ]
+
+
+# пріоритетна черга
+from queue import PriorityQueue
+
+
+# створення пріоритетної черги
+queue = PriorityQueue()
+
+# добавити елемент
+symtom = 'болить голова'
+priority = 3
+
+data = (priority, symtom)
+
+queue.put(data)
+
+# одним рядком
+# queue.put((3, 'болить голова'))
+# queue.put((priority, symtom))
+
+# queue.put((3, 'болить горло'))
+# queue.put((1, 'струс мозку'))
+# queue.put((2, 'просто спитати'))
 #
-# авдання 1
-# Використовуючи стек створіть клас WebHistory
+# # дістати елемент
+#
+# data = queue.get()  # отримуєте пару пріоритет, дані
+# print(data)
+#
+# data = queue.get()  # отримуєте пару пріоритет, дані
+# print(data)
+#
+# data = queue.get()  # отримуєте пару пріоритет, дані
+# print(data)
+#
+# priority, symtom = queue.get()  # отримуєте пару пріоритет, дані
+# print(symtom)
+#
+# print(queue.empty())
+
+# Використовуючи чергу створіть клас FastFoodQueue для
+# організації роботи черг у фасфуді. Є 4 каси, новий клієнт стає
+# в ту, де найменше людей. Коли клієнт зробив замовлення,
+# його добавляють в чергу на отримання. Має зберігатися час,
+# коли людина зробила замовлення, та коли отримала
+# замовлення. Інформація про час обслуговування має
+# зберігатись у окремому списку
 # Атрибути:
-#  history – стек з історією відвідування веб сторінок
-#  forward_history – стек з веб сторінками, для повернення
-# «вперед»
+#  queues – список з 4-ма чергами до кас
+#  order_queue – черга клієнтів на отримання замовлення
+#  service_duration_history – список з часом обслуговування
+# клієнтів
 # Методи:
-#  add(page) – перейти на нову сторінку
-#  undo() – повернутись на попередню сторінку
-#  redo() – перейти вперед
-#  get_current_page() – повернути поточну сторінку
-class WebHistory:
+#  add(client) – додає клієнта в найкоротшу чергу
+#  serve(idx) – обслуговуємо клієнта з черги за індексом.
+# Треба додати клієнта в order_queue разом з часом коли
+# зроблено замовлення
+#  make_order() – видає готове замовлення клієнту та
+# обраховує скільки часу очікував клієнт. Це число треба
+# добавити в service_duration_history
+#  show_statistics() – виводить мінімальний, максимальний
+# та середній час обслуговування клієнтів
+
+# TASK 1
+import time
+
+
+class Client:
+    def __init__(self, name):
+        self.name = name
+        self.time = time.time()
+
+
+class FastFoodQueue:
     def __init__(self):
-        self.history = DoubleLinkedList()
-        self.forward_history = DoubleLinkedList()
-
-    def add(self, page):
-        self.history.push_end(page)
-        self.forward_history = DoubleLinkedList()
-
-    def undo(self):
-        page = self.history.pop_end()
-        self.forward_history.push_end(page)
-
-    def redo(self):
-        redo_page = self.forward_history.pop_end()
-        self.history.push_end(redo_page)
+        self.queue1 = DoubleLinkedList()
+        self.queue2 = DoubleLinkedList()
+        self.queue3 = DoubleLinkedList()
+        self.queue4 = DoubleLinkedList()
+        self.order_queue = DoubleLinkedList()
+        self.queues = [self.queue1, self.queue2, self.queue3, self.queue4]
+        self.duration_history = []
 
 
-    def get_current_page(self):
-        return self.history.peek()
+    def add(self, name):
+        min_queue = min(self.queues)
+        min_queue.push_end(name)
 
-# Є вираз з дужками, за допомогою стеків визначіть чи
-# правильно розтавлені дужки, якщо ні то виведіть індекс
-# «проблемної» дужки.
-# def highlight_character(text, ind):
-#     for i, char in enumerate(text, start=1):
-#         if i == ind:
-#             print(f"\033[91m{char}\033[0m", end="")
-#         else:
-#             print(char, end="")
-#     print()
-#
-#
-# text = "2+(3*[5+6])/{(1+5+7)-(1+[-8])}"
-#
-# stack = DoubleLinkedList()
-#
-# is_correct = True
-#
-# for char in text:
-#     if char in "([{":
-#         stack.push_end(char)
-#     elif char in ")]}":
-#         if stack.is_empty():
-#             is_correct = False
-#             break
-#
-#         last_char = stack.pop_end()
-#
-#         if last_char + char in ["()", '[]', '{}']:
-#             is_correct = True
-#         else:
-#             is_correct = False
-#             break
-#
-# if not stack.is_empty():
-#     is_correct = False
-#
-#
-# print(is_correct)
-#
-#
-# highlight_character(text, 10)
+
+    def serve(self, idx):
+
+        serve_client = self.queues[idx].pop_start()
+        client = Client(serve_client)
+        self.order_queue.push_end(client)
+
+    def make_order(self):
+        client = self.order_queue.pop_start()
+        now_time = time.time()
+        difference = now_time - client.time
+        self.duration_history.append(difference)
+
+        print(f"{client.name} receive order after {difference:.0f} sec")
+
+
+    def show_statistics(self): #виводить мінімальний, максимальний # та середній час обслуговування клієнтів
+        min_time = min(self.duration_history)
+        max_time = max(self.duration_history)
+        ser_time = sum(self.duration_history) / len(self.duration_history)
+        print(f'мінімальний {min_time:.0f}  час обслуговування клієнтів')
+        print(f'максимальний {max_time:.0f}  час обслуговування клієнтів')
+        print(f'середній {ser_time:.0f}  час обслуговування клієнтів')
+
+
+
+
+
+
+
+# Тестування
+fast_food = FastFoodQueue()
+fast_food.add("Олег")
+fast_food.add("Анна")
+fast_food.add("Марія")
+fast_food.add("Сергій")
+
+fast_food.serve(0)
+fast_food.serve(1)
+
+time.sleep(2)
+fast_food.make_order()
+time.sleep(3)
+fast_food.make_order()
+
+fast_food.show_statistics()
