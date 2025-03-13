@@ -255,16 +255,55 @@ books = [
 for book in books:
     library.add(book)
 
-print(f"📚 У бібліотеці {len(library)} книг.")
+# print(f"📚 У бібліотеці {len(library)} книг.")
+#
+# library.borrow_book("Олександр", "1984")
+# library.borrow_book("Марія", "Гаррі Поттер і філософський камінь")
+# library.borrow_book("Андрій", "Війна і мир")
+#
+# library.return_book("Олександр", "1984")
+# library.return_book("Марія", "Гаррі Поттер і філософський камінь")
+# library.borrow_book("Андрій", "Гаррі Поттер і філософський камінь")
+#
+# library.display_info("1984")
+# library.display_info("Гаррі Поттер і філософський камінь")
+# library.display_info("Війна і мир")
 
-library.borrow_book("Олександр", "1984")
-library.borrow_book("Марія", "Гаррі Поттер і філософський камінь")
-library.borrow_book("Андрій", "Війна і мир")
+# Створіть програму роботи зі словником. Наприклад,
+# англо-іспанський, французько-німецький або інша мовна пара.
+# Програма має:
+#  надавати початкове введення даних для словника
+#  відображати слово та його переклади
+#  дозволяти додавати, змінювати, видаляти переклади
+# слова
 
-library.return_book("Олександр", "1984")
-library.return_book("Марія", "Гаррі Поттер і філософський камінь")
-library.borrow_book("Андрій", "Гаррі Поттер і філософський камінь")
+from bintrees import AVLTree
 
-library.display_info("1984")
-library.display_info("Гаррі Поттер і філософський камінь")
-library.display_info("Війна і мир")
+
+class Word:
+    def __init__(self, name, translation):
+        self.name = name
+        self.translations = [translation]
+
+
+class Dict:
+    def __init__(self):
+        self.tree_words = AVLTree()
+
+    def add_word(self, name, translation):
+        if name in self.tree_words:
+            word = self.tree_words[name]
+            word.translations.append(translation)
+        else:
+            new_word = Word(name, translation)
+            self.tree_words.insert(name, new_word)
+
+    def get(self, name):
+        return self.tree_words[name]
+
+
+my_dict = Dict()
+my_dict.add_word("run", "бігати")
+my_dict.add_word("run", "робити")
+run = my_dict.get("run")
+print(run.translations)
