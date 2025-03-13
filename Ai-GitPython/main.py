@@ -288,22 +288,149 @@ class FastFoodQueue:
 
 
 
+#
+#
+#
+# # Тестування
+# fast_food = FastFoodQueue()
+# fast_food.add("Олег")
+# fast_food.add("Анна")
+# fast_food.add("Марія")
+# fast_food.add("Сергій")
+#
+# fast_food.serve(0)
+# fast_food.serve(1)
+#
+# time.sleep(2)
+# fast_food.make_order()
+# time.sleep(3)
+# fast_food.make_order()
+#
+# fast_food.show_statistics()
 
+# Завдання 2
+# Використовуючи черги з пріоритетом створіть програму
+# для симуляції роботи аеропорту. Кожен пасажир має пройти
+# через 3 етапи: реєстрація, контроль безпеки, посадка.
+# Відповідно аеропорт складається з 3-ох зон, кожна з яких має
+# свою чергу. Коли Пасажир пройшов одну зону, то переходить
+# в наступну.
+# Пасажири з вищим пріоритетом обслуговуються першими
+# Клас Zone – зона
+# Атрибути:
+#  name – назва(реєстрація, контроль безпеки або посадка)
+#  passengers – черга пасажирів
+# Методи:
+#  add(passenger) – додає пацієнта в чергу з пріоритетом
+#  serve_passenger() – обслуговуємо наступного пасажира
+# та повертає його
+# Клас Airport – аеропорт
+# Атрибути:
+#  zones – словник із зонами, ключем є назва зони
+#  passengers – список пасажирів, які успішно пройшли 3
+# зони
+# Методи:
+#  add(passenger) – додає пасажира в чергу на реєстрацію
+#  serve_registration() – обслуговує клієнта з черги
+# реєстрації та переводить на котроль безпеки
+#  serve_security_control() – обслуговує клієнта з черги
+# контролю безпеки та переводить на посадку
+#  serve_boarding() – обслуговує клієнта з черги посадки та
+# переводить в passengers
+#  show_statistics() – вивести кількість пасажирів у кожній
+# зоні та скільки успішно все пройшли
+# Для цього скористайтесь класом Passenger
+# Атрибути:
+#  name – ім’я
+#  priority – пріоритет
+
+from queue import PriorityQueue
+
+class Passenger:
+    def __init__(self, name, priority):
+        self.name = name
+        self.priority = priority
+
+
+class Zone:
+
+    # Методи:
+    #  add(passenger) – додає пацієнта в чергу з пріоритетом
+    #  serve_passenger() – обслуговуємо наступного пасажира
+    # та повертає його
+    def __init__(self, name):
+        self.name = name
+        self.passengers = PriorityQueue()
+
+    def add_passanger(self, passenger):
+        priority = passenger.priority
+
+        pair = (priority, passenger)
+
+        self.passengers.put(pair)
+
+    def serve_passenger(self):
+        priority, passenger = self.passengers.get()
+        return passenger
+
+
+
+class Airport:
+# Атрибути:
+#  zones – словник із зонами, ключем є назва зони
+#  passengers – список пасажирів, які успішно пройшли 3
+# зони
+# Методи:
+#  add(passenger) – додає пасажира в чергу на реєстрацію
+#  serve_registration() – обслуговує клієнта з черги
+# реєстрації та переводить на котроль безпеки
+#  serve_security_control() – обслуговує клієнта з черги
+# контролю безпеки та переводить на посадку
+#  serve_boarding() – обслуговує клієнта з черги посадки та
+# переводить в passengers
+#  show_statistics() – вивести кількість пасажирів у кожній
+# зоні та скільки успішно все пройшли
+    def __init__(self):
+        self.zones = {"Registration": Zone("Реєстрація"),
+                      "Control": Zone("Контроль"),
+                      "Board": Zone("Посадка")}
+        self.passengers = []
+
+    def add(self, passenger):
+        self.zones["Registration"].add_passanger(passenger)
+
+    def serve_registration(self):
+        pas = self.zones["Registration"].serve_passenger()
+        self.zones["Control"].add_passanger(pas)
+
+    def serve_security_control(self):
+        pas = self.zones["Control"].serve_passenger()
+        self.zones["Board"].add_passanger(pas)
+
+    def serve_boarding(self):
+        pas = self.zones["Board"].serve_passenger()
+        self.passengers.append(pas)
+
+    def show_statistics(self):
+        print(len(self.passengers))
 
 
 # Тестування
-fast_food = FastFoodQueue()
-fast_food.add("Олег")
-fast_food.add("Анна")
-fast_food.add("Марія")
-fast_food.add("Сергій")
+airport = Airport()
+passengers = [
+    Passenger("Олег", 3),
+    Passenger("Анна", 1),
+    Passenger("Марія", 4),
+    Passenger("Сергій", 2)
+]
 
-fast_food.serve(0)
-fast_food.serve(1)
+for p in passengers:
+    airport.add(p)
 
-time.sleep(2)
-fast_food.make_order()
-time.sleep(3)
-fast_food.make_order()
+airport.serve_registration()
+airport.serve_registration()
+airport.serve_security_control()
+airport.serve_boarding()
 
-fast_food.show_statistics()
+airport.show_statistics()
+
