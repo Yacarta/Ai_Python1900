@@ -1,3 +1,107 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.prev = None
+
+    def __str__(self):
+        return f"{self.data} -> {self.next}"
+
+
+class DoubleLinkedList:
+    """
+    Клас двозв'язного списку.
+    """
+
+    def __init__(self):
+        """
+        Ініціалізація порожнього списку.
+        """
+        self.head = None
+        self.tail = None
+
+    def __str__(self):
+        return str(self.head)
+
+    def push_end(self, data):
+        """
+        Додає елемент у кінець списку.
+        :param data: Дані для додавання
+        """
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            new_node.prev = self.tail
+            self.tail = new_node
+
+    def push_start(self, data):
+        """
+        Додає елемент на початок списку.
+        :param data: Дані для додавання
+        """
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            new_node.next = self.head
+            self.head.prev = new_node
+            self.head = new_node
+
+    def pop_end(self):
+        """
+        Видаляє останній елемент зі списку.
+        :return: Дані видаленого елемента або None, якщо список порожній
+        """
+        if not self.tail:
+            return None
+
+        data = self.tail.data
+
+        if self.head.next is None:
+            self.head = None
+            self.tail = None
+        else:
+            self.tail = self.tail.prev
+            self.tail.next = None
+
+        return data
+
+    def pop_start(self):
+        """
+        Видаляє перший елемент зі списку.
+        :return: Дані видаленого елемента або None, якщо список порожній
+        """
+
+        if not self.head:
+            return None
+
+        data = self.head.data
+
+        if self.head.next is None:
+            self.head = None
+            self.tail = None
+        else:
+            self.head = self.head.next
+            self.head.prev = None
+        return data
+
+    def is_empty(self):
+        """
+        Чи є порожній
+        :return: True якщо порожній
+        """
+        return self.head is None
+
+    def peek(self):
+        """
+        Повертає останній елемент, не видаляючи його
+        :return: останній елемент
+        """
+        return self.tail.data
 class Task:
     def __init__(self, name):
         self.name = name
@@ -33,14 +137,25 @@ class Task:
 
 class Project:
     def __init__(self, task):
-        self.task = task
+        self.tasks = DoubleLinkedList()
+        self.tasks.push_end(task)
 
 
     def do_task(self):
+        if self.tasks.is_empty():
+            print('All maded')
+            return
 
+        cur_task = self.tasks.pop_end()
+        now_task = cur_task.do()
+
+        for task in now_task:
+            self.tasks.push_end(task)
 
 
     def is_finished(self):
+        return self.tasks.is_empty()
+
 
 
 
