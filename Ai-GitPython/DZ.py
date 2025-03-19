@@ -151,35 +151,35 @@ class Zone:
         return passenger
 
 class RegistrationZone(Zone):
-    # def registration(self):
-    #     docs = ["ticket"]
-    #     priority, passenger = self.passengers.get()
-    #     doc = docs and passenger.baggage
-    #     return passenger, doc
-
     def registration(self):
-        if not self.passengers.empty():
-            passenger = self.serve_passenger()
-            docs = ["ticket"]
-            has_ticket = "ticket" in docs  # Placeholder logic
-            return passenger, has_ticket
-        return None, False
+        docs = ["ticket"]
+        priority, passenger = self.passengers.get()
+        doc = docs and passenger.baggage
+        return passenger, doc
+
+    # def registration(self):
+    #     if not self.passengers.empty():
+    #         passenger = self.serve_passenger()
+    #         docs = ["ticket"]
+    #         has_ticket = "ticket" in docs  # Placeholder logic
+    #         return passenger, has_ticket
+    #     return None, False
 
 
 class SecurityZone(Zone):
-    # def serve_passenger(self):
-    #     if not self.passengers.empty():
-    #         priority, passenger = self.passengers.get()
-    #         danger = ["knife", "gun", "explosives"]
-    #         return passenger,  not (danger and passenger.baggage)
-    #     return None, False
     def serve_passenger(self):
         if not self.passengers.empty():
-            passenger = super().serve_passenger()
-            danger_items = ["knife", "gun", "explosives"]
-            is_safe = not any(item in passenger.baggage for item in danger_items)
-            return passenger, is_safe
+            priority, passenger = self.passengers.get()
+            danger = ["knife", "gun", "explosives"]
+            return passenger,  not (danger and passenger.baggage)
         return None, False
+    # def serve_passenger(self):
+    #     if not self.passengers.empty():
+    #         passenger = super().serve_passenger()
+    #         danger_items = ["knife", "gun", "explosives"]
+    #         is_safe = not any(item in passenger.baggage for item in danger_items)
+    #         return passenger, is_safe
+    #     return None, False
 
 
 class Airport:
