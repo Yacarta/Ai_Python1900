@@ -23,7 +23,7 @@ class Zone:
         return passenger
 
 
-class ZoneR(Zone):
+class RegistrationZone(Zone):
      def serve_passenger(self):
         priority, passenger = self.passengers.get()
         if "ticket" in passenger.baggage:
@@ -32,7 +32,7 @@ class ZoneR(Zone):
             return passenger, False
 
 
-class ZoneC(Zone):
+class SecurityZone(Zone):
     def serve_passenger(self):
         if not self.passengers.empty():
             priority, passenger = self.passengers.get()
@@ -43,7 +43,7 @@ class ZoneC(Zone):
         return None, True
 
 
-class ZoneB(Zone):
+class BoardingZone(Zone):
     def serve_passenger(self):
         if not self.passengers.empty():
             priority, passenger = self.passengers.get()
@@ -53,9 +53,9 @@ class ZoneB(Zone):
 
 class Airport:
     def __init__(self):
-        self.zones = {"Registration": ZoneR("Реєстрація"),
-                      "Control": ZoneC("Контроль"),
-                      "Board": ZoneB("Посадка")}
+        self.zones = {"Registration": RegistrationZone("Реєстрація"),
+                      "Control": SecurityZone("Контроль"),
+                      "Board": BoardingZone("Посадка")}
         self.passengers = []
 
     def add(self, passenger):
@@ -72,11 +72,10 @@ class Airport:
 
     def serve_security_control(self):
         pas, bool = self.zones["Control"].serve_passenger()
-        if (pas != None) and not bool:
+        if pas and not bool:
             self.zones["Board"].add_passanger(pas)
             print(f"{pas.name} пройшов в зону посадки.")
-        elif pas != None:
-        # else:
+        elif pas :
             print(f"{pas.name} має в багажі заборонені предмети.")
 
     def serve_boarding(self):
