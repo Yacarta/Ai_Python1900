@@ -89,6 +89,7 @@ class Airport:
             print(f"В літаку пасажир - {p.name}")
 
 
+
 # # Тестування
 airport = Airport()
 
