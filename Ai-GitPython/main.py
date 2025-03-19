@@ -1,439 +1,256 @@
-# rate1 = Banking.exchange_rates[from_currency]
-# rate2 = Banking.exchange_rates[to_currency]
-# return amount * rate1 / rate2
+#data = 'Hello, world'
 
-import time
-import datetime
 
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
-        self.prev = None
+# with open('data.txt', 'w') as file:
+#     file.write(data)
+#     #print(data, file=file)
 
-    def __str__(self):
-        return f"{self.data} -> {self.next}"
+# with open('data.txt', 'r') as file:
+#     data = file.read()
 #
 #
-# class DoubleLinkedList:
-#     """
-#     Клас двозв'язного списку.
-#     """
+# print(type(data))
+# print(data)
+
+# import json
+
+
+# data = {'number': 24}
+# data = [1, 2, 'hello']
+# bytes = json.dumps(data)  # переводить дані у серію байтів(серіалізація)
+# print(type(bytes))
+# print(bytes)
 #
-#     def __init__(self):
-#         """
-#         Ініціалізація порожнього списку.
-#         """
-#         self.head = None
-#         self.tail = None
-#         self.count = 0
+# new_data = json.loads(bytes)  # переводить байти назад в об'єкт(десеріалізація)
+# print(type(new_data))
+# print(new_data)
+
+# файли
+
+# зберегти дані у файл json
+# data = {"number": 25, "text": "Hello"}
 #
-#     def __str__(self):
-#         return str(self.head)
+# with open('data.json', 'w') as file:
+#     json.dump(data, file, indent=4)
 #
-#     def __gt__(self, other):
-#         return self.count > other.count
+# # завантажити дані з файли
+# with open('data.json', 'r') as file:
+#     new_data = json.load(file)
 #
-#     def push_end(self, data):
-#         """
-#         Додає елемент у кінець списку.
-#         :param data: Дані для додавання
-#         """
-#         self.count += 1
-#         new_node = Node(data)
-#         if not self.head:
-#             self.head = new_node
-#             self.tail = new_node
-#         else:
-#             self.tail.next = new_node
-#             new_node.prev = self.tail
-#             self.tail = new_node
+# print(new_data)
+
+
+# Користувач водить текстові повідомлення, зберегти
+# їх у список і у файл. За потреба заіантажити історію спілкування
+
+# завантажити історію
+# with open("history.json", 'r') as file:
+#     history = json.load(file)
 #
-#     def push_start(self, data):
-#         """
-#         Додає елемент на початок списку.
-#         :param data: Дані для додавання
-#         """
-#         self.count += 1
-#         new_node = Node(data)
-#         if not self.head:
-#             self.head = new_node
-#             self.tail = new_node
-#         else:
-#             new_node.next = self.head
-#             self.head.prev = new_node
-#             self.head = new_node
+# # головний цикл
+# while True:
+#     text = input("Введіть повідомлення: ")
 #
-#     def pop_end(self):
-#         """
-#         Видаляє останній елемент зі списку.
-#         :return: Дані видаленого елемента або None, якщо список порожній
-#         """
+#     if text == "":  # якщо порожньо, то кінець програми
+#         # перед завершенням зберегти історію
+#         with open("history.json", 'w') as file:
+#             json.dump(history, file)
+#         break
 #
-#         if not self.tail:
-#             return None
+#     elif text == "show": # показати історію
+#         print("History")
+#         for message in history:
+#             print(f"\t {message}")
 #
-#         self.count -= 1
-#         data = self.tail.data
+#     else:
+#         # просто повідомлення добавити в історію
+#         history.append(text)
+
+
+# збереждення об'єктів класів
 #
-#         if self.head.next is None:
-#             self.head = None
-#             self.tail = None
-#         else:
-#             self.tail = self.tail.prev
-#             self.tail.next = None
+# class Person:
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+#
+#     def celebrate_birthday(self):
+#         print(f"{self.name} святкує день народження")
+#         self.age += 1
+#
+#     def state_dict(self): # словник з атрибутами
+#         data = {
+#             'name': self.name,
+#             'age': self.age
+#         }
 #
 #         return data
 #
-#     def pop_start(self):
-#         """
-#         Видаляє перший елемент зі списку.
-#         :return: Дані видаленого елемента або None, якщо список порожній
-#         """
+#     def load(self, filename):
+#         with open(filename, 'r') as file:
+#             data = json.load(file)
 #
-#         if not self.head:
-#             return None
+#         self.name = data['name']
+#         self.age = data['age']
 #
 #
-#         self.count -= 1
-#         data = self.head.data
-#
-#         if self.head.next is None:
-#             self.head = None
-#             self.tail = None
-#         else:
-#             self.head = self.head.next
-#             self.head.prev = None
-#         return data
-#
-#     def is_empty(self):
-#         """
-#         Чи є порожній
-#         :return: True якщо порожній
-#         """
-#         return self.head is None
-#
-#     def peek(self):
-#         """
-#         Повертає останній елемент, не видаляючи його
-#         :return: останній елемент
-#         """
-#         return self.tail.data
-#
-#
-# class Message:
-#     def __init__(self, text):
-#         self.text = text
-#         #self.time = time.time()  # кількість секунд  1970 року
-#         self.time = datetime.datetime.now().time()  # нинішній чис
-#
-#     def __str__(self):
-#         return f"[{self.time}] {self.text}"
-#
-#
-# # клас для обробки повідомлень
-# class Messenger:
-#     def __init__(self):
-#         self.messages = DoubleLinkedList()
-#
-#     def add_message(self, text):
-#         # добавити в кінець черги
-#         message = Message(text)
-#
-#         self.messages.push_end(message)
-#
-#     def read_next_message(self):
-#         if self.messages.is_empty():
-#             print('Повідомлень немає')
-#             return
-#
-#         # дістає найдавніше повідемлення
-#         message = self.messages.pop_start()
-#
-#         print(f"Читаємо повідомлення: {message}")
-#
-#
-# # m = Messenger()
-# #
-# # m.add_message('Hello')
-# # time.sleep(1) # чекає 1 секунду
-# # m.add_message("What`s up")
-# # time.sleep(2) # чекає 2 секунди
-# # m.add_message("I`m fine")
-# #
-# #
-# # m.read_next_message()
-# # time.sleep(1)
-# # m.read_next_message()
-# # time.sleep(1)
-# # m.read_next_message()
-#
-#
-# # list1 = [1, 2, 3, 4]
-# # list2 = ['a', 'hello']
-# # list3 = [[1, 2, 3], Node(), ]
-#
-#
-# # пріоритетна черга
-# from queue import PriorityQueue
-#
-#
-# # створення пріоритетної черги
-# queue = PriorityQueue()
-#
-# # добавити елемент
-# symtom = 'болить голова'
-# priority = 3
-#
-# data = (priority, symtom)
-#
-# queue.put(data)
-#
-# # одним рядком
-# # queue.put((3, 'болить голова'))
-# # queue.put((priority, symtom))
-#
-# # queue.put((3, 'болить горло'))
-# # queue.put((1, 'струс мозку'))
-# # queue.put((2, 'просто спитати'))
-# #
-# # # дістати елемент
-# #
-# # data = queue.get()  # отримуєте пару пріоритет, дані
-# # print(data)
-# #
-# # data = queue.get()  # отримуєте пару пріоритет, дані
-# # print(data)
-# #
-# # data = queue.get()  # отримуєте пару пріоритет, дані
-# # print(data)
-# #
-# # priority, symtom = queue.get()  # отримуєте пару пріоритет, дані
-# # print(symtom)
-# #
-# # print(queue.empty())
-#
-# # Використовуючи чергу створіть клас FastFoodQueue для
-# # організації роботи черг у фасфуді. Є 4 каси, новий клієнт стає
-# # в ту, де найменше людей. Коли клієнт зробив замовлення,
-# # його добавляють в чергу на отримання. Має зберігатися час,
-# # коли людина зробила замовлення, та коли отримала
-# # замовлення. Інформація про час обслуговування має
-# # зберігатись у окремому списку
-# # Атрибути:
-# #  queues – список з 4-ма чергами до кас
-# #  order_queue – черга клієнтів на отримання замовлення
-# #  service_duration_history – список з часом обслуговування
-# # клієнтів
-# # Методи:
-# #  add(client) – додає клієнта в найкоротшу чергу
-# #  serve(idx) – обслуговуємо клієнта з черги за індексом.
-# # Треба додати клієнта в order_queue разом з часом коли
-# # зроблено замовлення
-# #  make_order() – видає готове замовлення клієнту та
-# # обраховує скільки часу очікував клієнт. Це число треба
-# # добавити в service_duration_history
-# #  show_statistics() – виводить мінімальний, максимальний
-# # та середній час обслуговування клієнтів
-#
-# # TASK 1
-# import time
-#
-#
-# class Client:
-#     def __init__(self, name):
-#         self.name = name
-#         self.time = time.time()
-#
-#
-# class FastFoodQueue:
-#     def __init__(self):
-#         self.queue1 = DoubleLinkedList()
-#         self.queue2 = DoubleLinkedList()
-#         self.queue3 = DoubleLinkedList()
-#         self.queue4 = DoubleLinkedList()
-#         self.order_queue = DoubleLinkedList()
-#         self.queues = [self.queue1, self.queue2, self.queue3, self.queue4]
-#         self.duration_history = []
-#
-#
-#     def add(self, name):
-#         min_queue = min(self.queues)
-#         min_queue.push_end(name)
-#
-#
-#     def serve(self, idx):
-#
-#         serve_client = self.queues[idx].pop_start()
-#         client = Client(serve_client)
-#         self.order_queue.push_end(client)
-#
-#     def make_order(self):
-#         client = self.order_queue.pop_start()
-#         now_time = time.time()
-#         difference = now_time - client.time
-#         self.duration_history.append(difference)
-#
-#         print(f"{client.name} receive order after {difference:.0f} sec")
-#
-#
-#     def show_statistics(self): #виводить мінімальний, максимальний # та середній час обслуговування клієнтів
-#         min_time = min(self.duration_history)
-#         max_time = max(self.duration_history)
-#         ser_time = sum(self.duration_history) / len(self.duration_history)
-#         print(f'мінімальний {min_time:.0f}  час обслуговування клієнтів')
-#         print(f'максимальний {max_time:.0f}  час обслуговування клієнтів')
-#         print(f'середній {ser_time:.0f}  час обслуговування клієнтів')
-#
-#
-#
-#
-# #
-# #
-# #
-# # # Тестування
-# # fast_food = FastFoodQueue()
-# # fast_food.add("Олег")
-# # fast_food.add("Анна")
-# # fast_food.add("Марія")
-# # fast_food.add("Сергій")
-# #
-# # fast_food.serve(0)
-# # fast_food.serve(1)
-# #
-# # time.sleep(2)
-# # fast_food.make_order()
-# # time.sleep(3)
-# # fast_food.make_order()
-# #
-# # fast_food.show_statistics()
-#
-# # Завдання 2
-# # Використовуючи черги з пріоритетом створіть програму
-# # для симуляції роботи аеропорту. Кожен пасажир має пройти
-# # через 3 етапи: реєстрація, контроль безпеки, посадка.
-# # Відповідно аеропорт складається з 3-ох зон, кожна з яких має
-# # свою чергу. Коли Пасажир пройшов одну зону, то переходить
-# # в наступну.
-# # Пасажири з вищим пріоритетом обслуговуються першими
-# # Клас Zone – зона
-# # Атрибути:
-# #  name – назва(реєстрація, контроль безпеки або посадка)
-# #  passengers – черга пасажирів
-# # Методи:
-# #  add(passenger) – додає пацієнта в чергу з пріоритетом
-# #  serve_passenger() – обслуговуємо наступного пасажира
-# # та повертає його
-# # Клас Airport – аеропорт
-# # Атрибути:
-# #  zones – словник із зонами, ключем є назва зони
-# #  passengers – список пасажирів, які успішно пройшли 3
-# # зони
-# # Методи:
-# #  add(passenger) – додає пасажира в чергу на реєстрацію
-# #  serve_registration() – обслуговує клієнта з черги
-# # реєстрації та переводить на котроль безпеки
-# #  serve_security_control() – обслуговує клієнта з черги
-# # контролю безпеки та переводить на посадку
-# #  serve_boarding() – обслуговує клієнта з черги посадки та
-# # переводить в passengers
-# #  show_statistics() – вивести кількість пасажирів у кожній
-# # зоні та скільки успішно все пройшли
-# # Для цього скористайтесь класом Passenger
-# # Атрибути:
-# #  name – ім’я
-# #  priority – пріоритет
-#
-# from queue import PriorityQueue
-#
-# class Passenger:
-#     def __init__(self, name, priority):
-#         self.name = name
-#         self.priority = priority
-#
-#
-# class Zone:
-#
-#     # Методи:
-#     #  add(passenger) – додає пацієнта в чергу з пріоритетом
-#     #  serve_passenger() – обслуговуємо наступного пасажира
-#     # та повертає його
-#     def __init__(self, name):
-#         self.name = name
-#         self.passengers = PriorityQueue()
-#
-#     def add_passanger(self, passenger):
-#         priority = passenger.priority
-#
-#         pair = (priority, passenger)
-#
-#         self.passengers.put(pair)
-#
-#     def serve_passenger(self):
-#         priority, passenger = self.passengers.get()
-#         return passenger
-#
-#
-#
-# class Airport:
-# # Атрибути:
-# #  zones – словник із зонами, ключем є назва зони
-# #  passengers – список пасажирів, які успішно пройшли 3
-# # зони
-# # Методи:
-# #  add(passenger) – додає пасажира в чергу на реєстрацію
-# #  serve_registration() – обслуговує клієнта з черги
-# # реєстрації та переводить на котроль безпеки
-# #  serve_security_control() – обслуговує клієнта з черги
-# # контролю безпеки та переводить на посадку
-# #  serve_boarding() – обслуговує клієнта з черги посадки та
-# # переводить в passengers
-# #  show_statistics() – вивести кількість пасажирів у кожній
-# # зоні та скільки успішно все пройшли
-#     def __init__(self):
-#         self.zones = {"Registration": Zone("Реєстрація"),
-#                       "Control": Zone("Контроль"),
-#                       "Board": Zone("Посадка")}
-#         self.passengers = []
-#
-#     def add(self, passenger):
-#         self.zones["Registration"].add_passanger(passenger)
-#
-#     def serve_registration(self):
-#         pas = self.zones["Registration"].serve_passenger()
-#         self.zones["Control"].add_passanger(pas)
-#
-#     def serve_security_control(self):
-#         pas = self.zones["Control"].serve_passenger()
-#         self.zones["Board"].add_passanger(pas)
-#
-#     def serve_boarding(self):
-#         pas = self.zones["Board"].serve_passenger()
-#         self.passengers.append(pas)
-#
-#     def show_statistics(self):
-#         print(len(self.passengers))
-#
-#
-# # Тестування
-# airport = Airport()
-# passengers = [
-#     Passenger("Олег", 3),
-#     Passenger("Анна", 1),
-#     Passenger("Марія", 4),
-#     Passenger("Сергій", 2)
-# ]
-#
-# for p in passengers:
-#     airport.add(p)
-#
-# airport.serve_registration()
-# airport.serve_registration()
-# airport.serve_security_control()
-# airport.serve_boarding()
-#
-# airport.show_statistics()
+# person = Person('', '')
+# person.load('data.json')
+# person.celebrate_birthday()
 
-x = 1 / 2 + 3 // 3 + 4 ** 2
-print(x)
+# person = Person("John", 30)
+# person.celebrate_birthday()
+# person.celebrate_birthday()
+#
+# with open('data.json', 'w') as file:
+#     json.dump(person.state_dict(), file) # збереження словника з атрибутами
+#
+#
+# # завантаження даних
+# with open('data.json', 'r') as file:
+#     data = json.load(file)
+#
+# new_person = Person(data['name'], data['age'])
 
+# _________________________________________________________________________________________________
+
+# Завдання 1
+# Є словник з логінами(ключ) та паролями(значення)
+# користувачів. Реалізуйте програму яка дозволяє:
+#  завантажити дані з файлу
+#  зберегти дані у файл
+#  додати нового користувача
+#  видалити користувача
+#  зміна паролю
+#  вхід у систему(якщо логін і пароль правильні)
+# Реалізуйте все через функції.
+import json
+
+def load_from_file(filename):
+    with open(filename, "r") as file:
+        data = json.load(file)
+        return data
+
+def save_to_file(filename, data):
+    with open(filename, "w") as file:
+        json.dump(data, file)
+
+def add_user(users):
+    login = input("Введіть логін: ")
+    pasw = input("Введіть пароль: ")
+    users[login] = pasw
+
+def del_user(users):
+    login = input("Введіть логін користувача, якого треба видалити: ")
+    users.pop(login)
+
+def change_pasw(users):
+    login = input("Введіть логін для якого треба змінити пароль: ")
+    if login in users:
+        pasw = input("Введіть новий пароль: ")
+        users[login] = pasw
+    else:
+        print(f"Невірний логін.")
+
+def login(users):
+    login = input("Введіть логін: ")
+    pasw = input("Введіть пароль: ")
+
+    if login in users:
+        if users[login] == pasw:
+            print("Ви в системі")
+        else:
+            print('Невірний пароль.')
+    else:
+        print(f"Невірний логін.")
+
+
+users = {}
+filename = 'users.json'
+
+while True:
+    print("""Можливі дії: 
+           1. Завантажити данні.
+           2. Зберегти данні.
+           3. Додати нового користувача.
+           4. Видалити користувача.
+           5. Зміна паролю.
+           6. Вхід у систему.
+           0. Закінчити.""")
+    choice = input("Введіть дію: ")
+
+    if choice == "0":
+        break
+    elif choice == "1":
+        users = load_from_file(filename)
+    elif choice == "2":
+        save_to_file(filename, users)
+    elif choice == "3":
+        add_user(users)
+    elif choice == "4":
+        del_user(users)
+    elif choice == "5":
+        change_pasw(users)
+    elif choice == "6":
+        login(users)
+    else:
+        print("невідома команда.")
+
+# Створіть клас Cart
+# Атрибути:
+#  user – ім’я користувача
+#  items – список товарів
+#  total – загальна ціна
+# Методи:
+#  add(item, price) – добавити товар у кошик
+#  delete(item, price) – видалити товар з кошика
+#  info() – вивести інформацію про кошик
+# Практичне завдання
+#  save(fiename) – зберегти дані у файл(за замовчуванням cart.json)
+#  load(fiename) – завантажити дані з файла(за замовчуванням cart.json)
+
+import json
+
+class Cart:
+    def __init__(self, user):
+        self.user = user
+        self.items = []
+        self.total = 0
+
+    def add(self, item, price):
+         self.items.append(item)
+         self.total += price
+
+    def delete(self, item, price):
+        self.items.remove(item)
+        self.total -= price
+
+    def info(self):
+        print(self.user)
+        print("Кошик")
+        for item in self.items:
+            print("   ", item)
+
+        print(f"Загальна ціна -- {self.total}")
+
+    def save(self, filename="cart.json"):
+        data = {"user": self.user, "items": self.items, "total": self.total}
+        with open(filename, "w") as file:
+            json.dump(data, file, indent=4)
+
+    def load(self, filename="cart.json"):
+        with open(filename, "r") as file:
+            data = json.load(file)
+        self.user = data["user"]
+        self.items = data["items"]
+        self.total = data["total"]
+
+
+cart = Cart("Jhon")
+# cart.add("Молоко", 10)
+# cart.add("Хліб", 5)
+#
+# cart.save()
+
+cart.load()
+cart.info()
