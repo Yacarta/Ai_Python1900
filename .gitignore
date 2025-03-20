@@ -9,7 +9,7 @@ Lab\Modul10Home\.idea\*
 
 /.venv/*
 pycache
-.idea/*
+Ai-GitPython/.idea/vcs.xml
 
 # Virtual environment
 venv/
