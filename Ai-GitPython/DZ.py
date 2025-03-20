@@ -1,125 +1,85 @@
-from queue import PriorityQueue
+# Напишіть гру вгадати число: комп’ютер загадує число
+# від 1 до 100. Користувач вводить свої відповіді на що
+# отримує підказки більше\менше.
+# Якщо число вгадане менш ніж за 5 спроб, то переміг
+# користувач, інакше комп’ютер.
+# Реалізуйте такий функціонал:
+#  почати нову гру – користувач вводить числа до
+# правильної відповіді
+#  вивести результат – кількість перемог та програшів
+#  зберегти дані – зберегти кількості перемог та
+# програшів у файл
+#  завантажити дані – завантажити кількості перемог
+# та програшів
+# Реалізуйте все функціями
+import json
+import random
 
-class Passenger:
-    def __init__(self, name, priority, baggage):
-        self.name = name
-        self.priority = priority
-        self.baggage = baggage
+def load_game(filename):
+    with open(filename, 'r') as file:
+        data = json.load(file)
+        return data
 
-
-
-class Zone:
-    def __init__(self, name):
-        self.name = name
-        self.passengers = PriorityQueue()
-
-    def add_passanger(self, passenger):
-        priority = passenger.priority
-        pair = (priority, passenger)
-        self.passengers.put(pair)
-
-    def serve_passenger(self):
-        priority, passenger = self.passengers.get()
-        return passenger
-
-
-class RegistrationZone(Zone):
-     def serve_passenger(self):
-        priority, passenger = self.passengers.get()
-        if "ticket" in passenger.baggage:
-            return passenger, True
-        else:
-            return passenger, False
-
-
-class SecurityZone(Zone):
-    def serve_passenger(self):
-        if not self.passengers.empty():
-            priority, passenger = self.passengers.get()
-            if ("weapon" in passenger.baggage) or ("knife" in passenger.baggage):
-                return passenger, True
+def new_game():
+    load_game(filename= "new.json")
+    win = 0
+    lost = 0
+    print('Нова гра')
+    atempts = 0
+    secret_num = random.randint(1, 100)
+    print("Вгадайте число від 1 до 100 з 5 спроб")
+    while True:
+        user_num = input('Введіть ваше число: ')
+        if atempts <=5:
+            if user_num > secret_num:
+                print("Число загадане менше")
+            elif user_num < secret_num:
+                print("Число загадане більше")
             else:
-                return passenger, False
-        return None, True
-
-
-class BoardingZone(Zone):
-    def serve_passenger(self):
-        if not self.passengers.empty():
-            priority, passenger = self.passengers.get()
-            return passenger, True
-        return None, False
-
-
-class Airport:
-    def __init__(self):
-        self.zones = {"Registration": RegistrationZone("Реєстрація"),
-                      "Control": SecurityZone("Контроль"),
-                      "Board": BoardingZone("Посадка")}
-        self.passengers = []
-
-    def add(self, passenger):
-        self.zones["Registration"].add_passanger(passenger)
-
-    def serve_registration(self):
-        pas, bool = self.zones["Registration"].serve_passenger()
-        # перевірка чи відповідає пасажир умові переходу в іншу зону
-        if bool:
-            self.zones["Control"].add_passanger(pas)
-            print(f"{pas.name} пройшов в зону контролю безпеки.")
+                atempts += 1
+                print(f'Вітаємо!!!!Ви вгадали з {atempts}-ї спроби ')
+                win += 1
+                return
         else:
-            print(f"{pas.name} не має квитка.")
-
-    def serve_security_control(self):
-        pas, bool = self.zones["Control"].serve_passenger()
-        if pas and not bool:
-            self.zones["Board"].add_passanger(pas)
-            print(f"{pas.name} пройшов в зону посадки.")
-        elif pas :
-            print(f"{pas.name} має в багажі заборонені предмети.")
-
-    def serve_boarding(self):
-        pas, bool = self.zones["Board"].serve_passenger()
-        if bool:
-            self.passengers.append(pas)
-
-    def show_statistics(self):
-        print(len(self.passengers))
-        for p in self.passengers:
-            print(f"В літаку пасажир - {p.name}")
+            print("Нажаль ви програли :-(")
+            lost +=1
+            return
 
 
 
-# # Тестування
-airport = Airport()
 
-passengers = [
-    Passenger("Олег", 3, ["weapon", "clothes"]),
-    Passenger("Анна", 5, ["ticket", "knife"]),
-    Passenger("Марія", 4, ["clothes"]),  # немає квитка
-    Passenger("Сергій", 2, ["ticket", "book"]),
-    Passenger("Ігор", 1, ["ticket", "clothes"]),
-]
 
-for p in passengers:
-    airport.add(p)
 
-airport.serve_registration()
-airport.serve_registration()
-airport.serve_registration()
-airport.serve_registration()
-airport.serve_registration()
 
-airport.serve_security_control()
-airport.serve_security_control()
-airport.serve_security_control()
-airport.serve_security_control()
-airport.serve_security_control()
+def save_game(filename):
+    data = {"wins": win, "losses": lost}
+    with open(filename, 'w') as file:
+        json.dump(data, file)
 
-airport.serve_boarding()
-airport.serve_boarding()
-airport.serve_boarding()
-airport.serve_boarding()
-airport.serve_boarding()
 
-airport.show_statistics()
+def load_game(filename):
+    with open(filename, 'r') as file:
+        data = json.load(file)
+        return data
+
+
+def results():
+    print(f"Перемог: {win}, Поразок: {lost}")
+
+def main():
+    while True:
+        print("\n1. Почати нову гру\n2. Вивести результат\n3. Вийти")
+        choice = input("Ваш вибір: ")
+
+        if choice == "1":
+            if new_game():
+                wins += 1
+                print("Ви перемогли!")
+            else:
+                losses += 1
+                print("Переміг комп'ютер!")
+            save_results(wins, losses)
+        elif choice == "2":
+            print(f"Перемог: {wins}, Поразок: {losses}")
+        elif choice == "3":
+            break

@@ -1,60 +1,84 @@
-# Завдання 1
-# Створіть клас Recipe з атрибутами  name – назва страви
-#  ingredients – список продуктів  text – текст рецепту
-#  time – час приготування
-# методи:
-#  __str__(self) – повертає назву страви
-#  __contains__(self, item)  – перевіряє чи є інгредієнт в рецепті
-#  __gt__(self, other)  – перевіряє чи є час приготування self більшим за other
-#  display_info(self) – виводить всю інформацію про рецепт
-# Створіть декілька рецептів та добавте їх у список. Виведіть назви тих рецептів, які містять інгредієнт томат
-# Виведіть повну інформацію рецепта з найменшим часом приготування, скористайтесь функцією min
+import json
+import random
+
+# Global counters for wins and losses
+wins = 0
+losses = 0
 
 
-class Recipe:
-    def __init__(self, name, ingredients, text, time):
-        self.name = name
-        self.ingredients = ingredients  # Fixed typo
-        self.text = text
-        self.time = time
-
-    def __str__(self):
-        return f"Назва страви: {self.name}"
-
-    def __contains__(self, item):
-        print(f'{item} ')
-        return item in self.ingredients  # Fixed typo
-
-    def __gt__(self, other):
-        return self.time > other.time
-
-    def display_info(self):
-        print("-" * 20)
-        print(f"Назва страви: \n '{self.name}'")
-        print("-" * 20)
-        print("Інгредієнти:")
-        for ingredient in self.ingredients:
-            print(f"- {ingredient}", end=" ")
+def load_game(filename):
+    """Load the game results from the file."""
+    global wins, losses
+    try:
+        with open(filename, 'r') as file:
+            data = json.load(file)
+            wins = data.get("wins", 0)
+            losses = data.get("losses", 0)
+    except FileNotFoundError:
+        # If file doesn't exist, initialize the game
+        print("No saved game data found, starting fresh.")
+        wins, losses = 0, 0
 
 
+def save_game(filename):
+    """Save the game results to the file."""
+    with open(filename, 'w') as file:
+        json.dump({"wins": wins, "losses": losses}, file)
 
-recipe1 = Recipe("Піца",
-       ["борошно", "вода", "дріжджі", "томат", "сир"],
-       "Готуємо тісто, додаємо інгредієнти та запікаємо",
-       30)
 
-recipe2 = Recipe("Салат",        ["томат", "огірок", "зелень", "олія"],
-       "Нарізаємо овочі, додаємо зелень та поливаємо олією ", 10)
+def new_game():
+    """Start a new game."""
+    global wins, losses
+    attempts = 0
+    secret_num = random.randint(1, 100)
+    print("Вгадайте число від 1 до 100 з 5 спроб")
 
-recipe3 = Recipe("Суп",        ["вода", "картопля", "морква", "м'ясо"],
-       "Варимо всі інгредієнти до готовності",        45)
+    while attempts < 5:
+        user_input = input(f"Введіть ваше число (спроба {attempts + 1}): ")
+        try:
+            user_num = int(user_input)
+        except ValueError:
+            print("Будь ласка, введіть дійсне число!")
+            continue
 
-recipe1.display_info()
+        attempts += 1
+        if user_num > secret_num:
+            print("Число загадане менше")
+        elif user_num < secret_num:
+            print("Число загадане більше")
+        else:
+            print(f'Вітаємо!!!! Ви вгадали з {attempts}-ї спроби.')
+            wins += 1
+            return
 
-print("огірок" in recipe1)
-print("----" *5 )
-print(min(recipe1, recipe2))
-print("+++++" *5 )
+    print("Нажаль ви програли :-(")
+    losses += 1
 
-recipe1.display_info()
+
+def results():
+    """Display the current results."""
+    print(f"Перемог: {wins}, Поразок: {losses}")
+
+
+def main():
+    load_game('game_data.json')
+
+    while True:
+        print("\n1. Почати нову гру\n2. Вивести результат\n3. Вийти")
+        choice = input("Ваш вибір: ")
+
+        if choice == "1":
+            new_game()
+            save_game('game_data.json')
+        elif choice == "2":
+            results()
+        elif choice == "3":
+            print("До побачення!")
+            break
+        else:
+            print("Невірний вибір, спробуйте ще раз.")
+
+
+if __name__ == "__main__":
+    main()
 
