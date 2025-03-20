@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 Lab\.idea\*
-
+Lab/.idea/*
 
 Lab\Modul10Home\.idea\*
 
