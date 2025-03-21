@@ -98,3 +98,6 @@ coverage.xml
 
 # VS Code
 .vscode/
+/Ai-GitPython/items.json
+/Ai-GitPython/items.pkl
+/Ai-GitPython/results.json
