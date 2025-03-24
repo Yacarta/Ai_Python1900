@@ -1,4 +1,13 @@
-
+# Напишіть програму для збереження даних про музичні
+# групи у вигляді словника, де ключ – назва групи, значення –
+# список альбомів.
+# Напишіть функціонал:
+#  додати новий гурт
+#  додати новий альбом
+#  зберегти дані через json
+#  зберегти дані через pickle
+#  завантажити дані через json
+#  завантажити дані через pickle
 import json
 import pickle
 music_group = {}
@@ -98,4 +107,15 @@ if __name__ == '__main__':
 
 
 
-
+groups = {
+    "The Beatles": ["Abbey Road", "Sgt. Pepper's Lonely Hearts Club Band"],
+    "Queen": ["A Night at the Opera", "News of the World"],
+    "Pink Floyd": ["The Dark Side of the Moon", "Wish You Were Here"],
+    "Metallica": ["Master of Puppets", "Ride the Lightning"],
+    "Nirvana": ["Nevermind", "In Utero"],
+    "Led Zeppelin": ["Led Zeppelin IV", "Houses of the Holy"],
+    "The Rolling Stones": ["Sticky Fingers", "Exile on Main St."],
+    "U2": ["The Joshua Tree", "Achtung Baby"],
+    "AC/DC": ["Back in Black", "Highway to Hell"],
+    "Coldplay": ["Parachutes", "A Rush of Blood to the Head"]
+}
