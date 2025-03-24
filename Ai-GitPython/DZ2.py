@@ -5,7 +5,6 @@ import random
 wins = 0
 losses = 0
 
-
 def load_game(filename):
     """Load the game results from the file."""
     global wins, losses
