@@ -1,252 +1,277 @@
+# Як було раніше
 import json
-
-
-data = [1, 2, 3, 4]
-
-# JSON
-# збереження у файл
-# filename = 'data.json'
-# with open(filename, 'w') as file:
-#     json.dump(data, file)
+# def func1():
+#     print('Hello from func1')
 #
 #
-# # завантаження з файла
-# with open(filename, 'r') as file:
-#     new_data = json.load(file)
+# def func2():
+#     print('Hello from func2')
 #
 #
-# print(new_data)
+# func1()  # виконується код з func1
+# func2()  # чекає поки завершиться попередній код, тоді починає роботу
+# func2()
+# func1()
 
-#Pickle
-import pickle
+# створення потоків
+import threading
+import time
 
+# def func1():
+#     for i in range(1000_000):
+#         if i % 100_000 == 0:  # виводити раз на 100_000
+#             print('Hello from func1\n', end='')
+#
+#
+# def func2():
+#     for i in range(1000_000):
+#         if i % 100_000 == 0:
+#             print('Hello from func2\n', end='')
+#
+#
+# # потік для виконання функції func1
+# thread1 = threading.Thread(target=func1)
+#
+# # потік для виконання функції func2
+# thread2 = threading.Thread(target=func2)
+#
+#
+# # запускаємо потоки
+# thread1.start()
+# thread2.start()
+#
+# print('hello before join')  # може запуститись коли потоки ще працюють
+#
+# # момент коли потоки закінчили роботу
+# thread1.join()
+# thread2.join()
+#
+# print('END')  # запуститься коли потоки закінчили роботу
 
-data = [1, 2, 3, 4]
+# функції з параметрами
 
-encoded = pickle.dumps(data)
-print(encoded)
-
-збереження у файл
-w -- відкрити для запису
-b -- відкрити як двійковий файл(файл з байтами)
-
-with open('data.pkl', 'wb') as file:
-   pickle.dump(data, file)
-    #file.write('data')
-
-
-# завантаження з файла
-with open('data.pkl', 'rb') as file:
-    new_data = pickle.load(file)
-
-print(new_data)
-
-dump -- робота з файлом
-dumps -- робота без файла
-
-
-# класи
-
-class Person:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-
-    def print_info(self):
-        print(f"{self.name}, {self.age} років")
-
-    def __repr__(self):
-        return f"{self.name}, {self.age} років"
-
-
-person1 = Person('Mary', 27)
-person2 = Person("John", 34)
-person3 = Person('Jack', 42)
-
-persons = [person1, person2, person3]
-
-with open('data.pkl', 'wb') as file:
-    pickle.dump(persons, file)
-
-
-with open("data.pkl", 'rb') as file:
-    data = pickle.load(file)
-
-
-print(data)
-jack = data[2]
-
-jack.print_info()
-
-
-
-# gzip
-import gzip
+# def greeting(name, age):
+#     for i in range(1000_000):
+#         if i % 100_000 == 0:
+#             print(f'Привіт {name}, {age} років\n', end='')
+#
+#
+# def summa(nums):
+#     for i in range(1000_000):
+#         if i % 100_000 == 0:
+#             print(f'Сума чисел {nums} = {sum(nums)}\n', end='')
+#
+#
+# nums = [1, 2, 3, 4]
+#
+# # thread1 = threading.Thread(target=greeting, args=('John',), kwargs={"age": 35})
+# thread1 = threading.Thread(target=greeting, args=('John', 35))
+# thread2 = threading.Thread(target=summa, args=(nums,))
+#
+# thread1.start()
+# thread2.start()
+#
+# thread1.join()
+# thread2.join()
 
 
-data = [1, 2, 3, 4]
+# спільна ділянка пам'яті
 
-with gzip.open('data.zip', 'wb') as file:
-    # кодуємо дані у байти
-    encoded_data = pickle.dumps(data)
+# nums = [1, 2, 3, 4]
+# lock = threading.Lock()
+#
+#
+# def append():
+#     # дістати nums зі спільної області пам'яті
+#     global nums, lock
+#
+#     for num in range(1000):
+#         # працює зі спільною ділянкою пам'яті
+#         # інші потоки зупиняються поки цей не завершить роботу
+#         lock.acquire()
+#
+#         nums.append(num)
+#
+#         lock.release()  # роботу завершено, інші потоки можуть працювати
+#
+# def remove():
+#     global nums, lock
+#
+#     for _ in range(1000):
+#         lock.acquire()
+#         nums.pop(0)
+#         lock.release()
+#
+#
+# thread1 = threading.Thread(target=append)
+# thread2 = threading.Thread(target=remove)
+#
+# thread1.start()
+# thread2.start()
+#
+# thread1.join()
+# thread2.join()
+#
+# print(nums)
+#  Завдання 1
+#  Користувач вводить з клавіатури значення у список.
+# Після чого запускаються два потоки. Перший потік знахо
+# дить максимум у списку. Другий потік знаходить мінімум
+# у списку. Результати обчислень виведіть на екран.
 
-    # зберігаємо закодовані дані у файл
-    file.write(encoded_data)
+import threading
+
+#
+# def find_max(numbers):
+#     print(max(numbers))
+#
+#
+# def find_min(numbers):
+#     print(min(numbers))
+#
+#
+# def read():
+#     numbers = []
+#
+#     while True:
+#         input_number = int(input(" number "))
+#
+#         if input_number == 0:
+#             return numbers
+#
+#
+#         numbers.append(input_number)
 
 
-with gzip.open('data.zip', 'rb') as file:
-    # читаємо закодовані дані
-    encoded_data = file.read()
+# numbers = read()
+#
+# maximum = threading.Thread(target=find_max, args=(numbers,))
+# minimum = threading.Thread(target=find_min, args=(numbers,))
+#
+# maximum.start()
+# minimum.start()
+#
+# maximum.join()
+# minimum.join()
 
-    # розшифровуємо дані
-    new_data = pickle.loads(encoded_data)
+# Завдання 2
+#  Користувач вводить з клавіатури значення у список.
+# Після чого запускаються два потоки. Перший потік зна
+# ходить суму елементів у списку. Другий потік знаходить
+# середнє арифметичне у списку. Результати обчислень
+# виведіть на екран.
+#  Завдання 3
+#  Користувач вводить з клавіатури шлях до файлу, що
+# містить набір чисел. Після чого запускаються два потоки.
+# Перший потік створює новий файл, в який запише лише
+# парні елементи списку. Другий потік створює новий файл,
+# в який запише лише непарні елементи списку. Кількість
+# парних і непарних елементів виводиться на екран
+
+# import threading
+# import json
+
+# lock = threading.Lock()
+#
+# path = input('Input file: ')
+#
+# def even(path):
+#     global lock
+#
+#     lock.acquire()
+#
+#     with open(path, 'r') as file:
+#         nums_data = json.load(file)
+#
+#     lock.release()
+#
+#     even_nums =[]
+#     for num in nums_data:
+#         if num %2 ==0:
+#             even_nums.append(num)
+#
+#     new_path = path[:-5] +'_even.json'
+#
+#     with open(new_path, 'w') as file:
+#         json.dump(even_nums, file)
+#
+#
+# def odd(path):
+#     global lock
+#
+#     lock.acquire()
+#     with open(path, 'r') as file:
+#         nums_data = json.load(file)
+#
+#     lock.release()
+#     even_nums = []
+#     for num in nums_data:
+#         if num % 2 != 0:
+#             even_nums.append(num)
+#
+#     new_path = path[:-5] + '_odd.json'
+#
+#     with open(new_path, 'w') as file:
+#         json.dump(even_nums, file)
+
+# thr_even = threading.Thread(target=even, args=(path,))
+# thr_odd = threading.Thread(target=odd, args=(path,))
+#
+# thr_even.start()
+# thr_odd.start()
+#
+# thr_even.join()
+# thr_odd.join()
+
+#  Користувач вводить з клавіатури шлях до файлу та
+# слово для пошуку. Після чого запускається потік для
+# пошуку цього слова у файлі. Результат пошуку виведіть
+# на екран.
+
+import threading
 
 
-print(encoded_data)
-print(new_data)
-
-# Напишіть програму для заповнення списку товарів.
-# Назви товарів вводить користувач. Реалізуйте функціонал:
-#  додати новий товар
-#  вивести список товарів
-#  зберегти дані через json
-#  зберегти дані через pickle
-#  завантажити дані через json
-#  завантажити дані через pickle
-
-import json
-import pickle
-
-def add_item(items):
-    item = input('Введіть назву товару: ')
-    items.append(item)
-
-
-def print_items(items):
-    print('Товари: ')
-    for item in items:
-        print('   ', item)
-
-
-def save_json(items, filename='items.json'):
-    with open(filename, 'w') as file:
-        json.dump(items, file)
-
-
-def save_pickle(items, filename='items.pkl'):
-    with open(filename, 'wb') as file:
-        pickle.dump(items, file)
-
-
-def load_json(filename='items.json'):
+def func(user_path, user_word):
     try:
-        with open(filename, 'r') as file:
-            return json.load(file)
+        with open(user_path, 'r') as file:
+            words = file.read().lower()
     except Exception:
-        print('Невдалось завантажити')
-        return []
+        print('Файлу не існує')
+        return
+
+    word_count = words.count(user_word)
+    print(f"Слово {user_word} зустрічається {word_count} разів")
 
 
-def load_pickle(filename='items.pkl'):
-     try:
-        with open(filename, 'rb') as file:
-            return pickle.load(file)
-     except Exception:
-        print('Невдалось завантажити')
-        return []
+user_path = input('Enter path: ')
+user_word = input('Enter word for search: ').lower()
+
+thread_user = threading.Thread(target=func, args=(user_path, user_word))
+thread_user.start()
+thread_user.join()
 
 
-def main():
-    items = []
-    while True:
-        print('''Виберіть:
-            1. Додати товар.
-            2. Вивести список товарів
-            3. Зберегти Json
-            4. Зберегти Pickle
-            5. Завантажити Json
-            6. Завантажити Pickle''')
-
-        user_choice = input('Введіть команду: ')
-
-        if user_choice == '1':
-            add_item(items)
-
-        elif user_choice == '2':
-            print_items(items)
-
-        elif user_choice == '3':
-            save_json(items)
-
-        elif user_choice == '4':
-            save_pickle(items)
-
-        elif user_choice == '5':
-            items = load_json()
-
-        elif user_choice == '6':
-            items = load_pickle()
-
-        else:
-            break
 
 
-if __name__ == '__main__':
-    main()
-
-# Напишіть клас Student
-# Атрибути:
-#  name – ім’я
-#  specialization – спеціалізація
-#  grades – список оцінок
-# Методи:
-#  add_grade(grade) – додати нову оцінку
-#  show_info() – вивести ім’я, спеціалізацію та середню
-# оцінку
-
-# Створіть список з трьох студентів. Збережіть цей список
-# використовуючи pickle та json.
-# Завантажте дані за допомогою pickle та json
-#######
-
-import json
-import pickle
 
 
-class Student:
-    def __init__(self, name, specialization):
-        self.name = name
-        self.specialization = specialization
-        self.grades = []
 
-    def add_grade(self, grade):
-        self.grades.append(grade)
 
-    def show_info(self):
-        print()
-        print()
-        print(self.name)
-        print(self.specialization)
-        av_grade = sum(self.grades)/len(self.grades)
-        print(av_grade)
 
-student1 = Student("Jonh","Art")
-student2 = Student("Anna","Art")
-student3 = Student("Mary","Music")
-students = [student1, student2, student3]
 
-students[0].add_grade(5)
-students[1].add_grade(8)
-students[2].add_grade(11)
-students[2].add_grade(9)
 
-#Збережіть цей список
-# використовуючи pickle та json.
 
-with open("students.pcl", "wb") as file:
-    pickle.dump(students, file)
 
-with open("students.pcl", "rb") as file:
-    new_students = pickle.load(file)
 
-new_students[2].show_info()
+
+
+
+
+
+
+
+
+
+
+
+
