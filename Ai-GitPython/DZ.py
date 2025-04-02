@@ -34,11 +34,30 @@ def user_num():
     print(numbers)
 
 
-def sum_num(list):
-    resu = sum(list)
-    prin
+def sum_number(numbers):
+    print(sum(numbers))
+
+def seredne(numbers):
+    if len(numbers) ==0:
+        print("Список пустий")
+    else:
+        print(sum(numbers)/len(numbers))
+
+
+def sum_num(num_list):
+    resu = sum(num_list)
+    print(resu)
+
+
 thread1 = threading.Thread(target=user_num)
 thread1.start()
+thread1.join()
+thread2 = threading.Thread(target=sum_number, args=(numbers,))
+thread3 = threading.Thread(target=seredne, args=(numbers,))
+thread2.start()
+thread3.start()
+thread2.join()
+thread3.join()
 
 
 
