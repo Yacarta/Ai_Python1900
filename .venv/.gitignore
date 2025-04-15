@@ -1,2 +1,55 @@
 # Created by venv; see https://docs.python.org/3/library/venv.html
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# VS Code settings
+.vscode/
+
+# macOS files
+.DS_Store
+
+# PyCharm
+.idea/
+
+# Logs and local data
+*.log
+*.sqlite3
+
+# Python environment files
+*.env
+*.venv
+
+# Test output
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+.cache
+nosetests.xml
+test-results/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# MyPy, Pyre, etc.
+.mypy_cache/
+.pyre/
+.dmypy.json
+
+# Packaging
+*.egg-info/
+dist/
+build/
+.eggs/
+
 config.json
