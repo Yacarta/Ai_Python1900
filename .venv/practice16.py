@@ -127,6 +127,7 @@ class RedisCart:
     # ■ Змінити товар у кошику;
 
 
+
     # ■ Повне очищення кошика;
     def clear_cart(self):
         if not self._check_current_user():
