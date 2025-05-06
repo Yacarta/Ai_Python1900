@@ -1,23 +1,23 @@
 import random
-from tkinter.font import names
 
-# #  Напишіть програму, яка приймає два цілих числа від
-# # користувача і виводить суму діапазону чисел між ними.
-#
-# user_number1 = int(input('Введіть перше число: '))
-# user_number2 = int(input('Введіть друге число: '))
-#
-# if user_number1 > user_number2:
-#     user_number1, user_number2 = user_number2, user_number1
-#
-# sum_num = 0
-# for i in range(user_number1, user_number2+1):
-#     sum_num += i
-#
-# print(f'Cумa діапазону чисел між {user_number1} і {user_number2} дорівнює {sum_num}')
 
-# Напишіть програму, для знаходження суми всіх парних
-# чисел від 1 до 100.
+#  Напишіть програму, яка приймає два цілих числа від
+# користувача і виводить суму діапазону чисел між ними.
+
+user_number1 = int(input('Введіть перше число: '))
+user_number2 = int(input('Введіть друге число: '))
+
+if user_number1 > user_number2:
+    user_number1, user_number2 = user_number2, user_number1
+
+sum_num = 0
+for i in range(user_number1, user_number2+1):
+    sum_num += i
+
+print(f'Cумa діапазону чисел між {user_number1} і {user_number2} дорівнює {sum_num}')
+
+Напишіть програму, для знаходження суми всіх парних
+чисел від 1 до 100.
 
 sum = 0
 
@@ -25,69 +25,69 @@ for i in range(1, 101):
     if i % 2 == 0:
         sum += i
 
-#print('Сумма всіх парних чисел= ', sum)
+print('Сумма всіх парних чисел= ', sum)
 
-# # Напишіть програму, яка приймає рядок від користувача і
-# # виводить кожну літеру рядка на окремому рядку.
-#
-# user_text = input(" Введіть слово: ")
-# for i in user_text:
-#     print(i, end="\n")
+# Напишіть програму, яка приймає рядок від користувача і
+# виводить кожну літеру рядка на окремому рядку.
 
-# # Напишіть програму, яка створює список цілих чисел та
-# # виводить новий список, який містить лише парні числа з
-# # вихідного списку.
-#
-# numbers = []
-# for i in range(20):
-#     random_num = random.randint(1,20)
-#     numbers.append(random_num)
-# print(numbers)
-# number_odd = []
-# for i in numbers:
-#     if i % 2 == 0:
-#         number_odd.append(i)
-# print(number_odd)
+user_text = input(" Введіть слово: ")
+for i in user_text:
+    print(i, end="\n")
 
-# # Напишіть функцію, яка приймає список рядків від
-# # користувача і повертає новий список, що містить лише
-# # рядки, що починаються з великої літери.
-#
-# def text_cap(text):
-#     final_text = []
-#     for i in text:
-#         i = i.strip()
-#         if i  and i[0].isupper():
-#             final_text.append(i)
-#     return final_text
-#
-#
-#
-# text = input("Введіть текст з рядками через кому: ").split(',')
-# result = text_cap(text)
-# print(result)
+# Напишіть програму, яка створює список цілих чисел та
+# виводить новий список, який містить лише парні числа з
+# вихідного списку.
+
+numbers = []
+for i in range(20):
+    random_num = random.randint(1,20)
+    numbers.append(random_num)
+print(numbers)
+number_odd = []
+for i in numbers:
+    if i % 2 == 0:
+        number_odd.append(i)
+print(number_odd)
 
 # Напишіть функцію, яка приймає список рядків від
 # користувача і повертає новий список, що містить лише
-# рядки, які містять слово "Python".
+# рядки, що починаються з великої літери.
 
-# def text_cap(text):
-#     final_text = []
-#     for i in text:
-#         i = i.strip()
-#         if "Python" in i:
-#             final_text.append(i)
-#     return final_text
-#
-# text = input("Введіть текст з рядками через кому: ").split(',')
-# result = text_cap(text)
-# for line in result:
-#     print(line)
+def text_cap(text):
+    final_text = []
+    for i in text:
+        i = i.strip()
+        if i  and i[0].isupper():
+            final_text.append(i)
+    return final_text
 
-# Напишіть програму, яка
-# створює словник, де ключами є слова, а значеннями - їхні
-# визначення. Дозвольте користувачу додавати, видаляти
-# та шукати слова у цьому словнику
+
+
+text = input("Введіть текст з рядками через кому: ").split(',')
+result = text_cap(text)
+print(result)
+
+Напишіть функцію, яка приймає список рядків від
+користувача і повертає новий список, що містить лише
+рядки, які містять слово "Python".
+
+def text_cap(text):
+    final_text = []
+    for i in text:
+        i = i.strip()
+        if "Python" in i:
+            final_text.append(i)
+    return final_text
+
+text = input("Введіть текст з рядками через кому: ").split(',')
+result = text_cap(text)
+for line in result:
+    print(line)
+
+Напишіть програму, яка
+створює словник, де ключами є слова, а значеннями - їхні
+визначення. Дозвольте користувачу додавати, видаляти
+та шукати слова у цьому словнику
 dict = {}
 def add_dict():
     word = input("Введіть слово: ")
